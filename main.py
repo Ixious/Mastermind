@@ -28,10 +28,24 @@ class Game():
     pass
 
 class Board():
-    n_allowed_guesses = 0
-    n_attempts = 0
+
+    def __init__(self, n_guess, n_attempts):
+        self.n_allowed_guesses = n_guess
+        self.n_attempts = n_attempts
+
     code_guess = ""
     guess_log = "" #+ end line, + seps etc.
+
+    def giveFeedback(self):
+        return #feedback
+
+    def testGuess(self):
+        # if code guess != set code:
+        #   for marbel in code guess:
+        #       if marbel == set code [index] and marbel == set code[colour]
+        #           place colour
+        #       if marbel == set code [colour] and != set code [index]:
+        #           place colour for this result
 
     #giveFeedback():
     #testGuess():
@@ -41,13 +55,18 @@ class Board():
     pass
 
 class Code():
-    
+    input_code = ""
+
+    #inputCode():
     pass
 
-class GamePiece():
+class GamePiece(p_colour, p_index):
+    position = p_index
+    colour = p_colour
     pass
 
     class Peg():
+        # placePegs(code):
         pass
     class Marbel():
         pass
