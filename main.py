@@ -9,15 +9,20 @@
 #
 class WorldOfMastermind():
 
-    reg_players = []
+    def __init__(self):
+        self.reg_players = []
 
-    # run():
-    # playGame():
-    # quitGame():
-    # registerPlayer():
-    # showScoreBoard():
-    #
-    pass
+
+    # def run():
+    #   pass
+    # def playGame():
+    #   pass
+    # def quitGame():
+    #   pass
+    # def registerPlayer():
+    #   pass
+    # def showScoreBoard():
+    #   pass
 
 class Game():
     n_players = 0
@@ -35,22 +40,27 @@ class Board():
 
     code_guess = ""
     guess_log = "" #+ end line, + seps etc.
+    feedback_list =[]
 
     def giveFeedback(self):
-        return #feedback
+        pass
+        #return #feedback
 
     def testGuess(self):
+
         # if code guess != set code:
         #   for marbel in code guess:
         #       if marbel == set code [index] and marbel == set code[colour]
         #           place colour
         #       if marbel == set code [colour] and != set code [index]:
         #           place colour for this result
+        #return feedback_list
 
-    #giveFeedback():
-    #testGuess():
-    #giveResult():
-    #tallyScore():
+    def giveResult(self):
+        pass
+
+    def tallyScore(self):
+        pass
 
     pass
 
@@ -61,13 +71,16 @@ class Code():
     pass
 
 class GamePiece(p_colour, p_index):
-    position = p_index
-    colour = p_colour
-    pass
+
+    def __init__(self):
+        self.position = p_index
+        self.colour = p_colour
+
 
     class Peg():
-        # placePegs(code):
+        # def placePegs(code):
         pass
+
     class Marbel():
         pass
 
