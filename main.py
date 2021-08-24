@@ -13,13 +13,31 @@ class WorldOfMastermind():
         self.reg_players = []
 
 
-    # def run():
-    #   pass
+    def run(self):
+        pass
+
+    def options(self):
+
+        user_selection = ''
+
+        while user_selection not in ['r', 's', 'p', 'q']:
+            print("What would you like to do?")
+            print(" (r) register a new user")
+            print(" (s) show the score board")
+            print(" (p) play a game")
+            print(" (q) quit")
+            user_selection = input()
+
+        if user_selection == 'r':
+            wom.registerPlayer()
+
+
     # def playGame():
     #   pass
     # def quitGame():
     #   pass
-    # def registerPlayer():
+    def registerPlayer(self):
+        print("in registerPlayer")
     #   pass
     # def showScoreBoard():
     #   pass
@@ -55,6 +73,7 @@ class Board():
         #       if marbel == set code [colour] and != set code [index]:
         #           place colour for this result
         #return feedback_list
+        pass
 
     def giveResult(self):
         pass
@@ -65,12 +84,12 @@ class Board():
     pass
 
 class Code():
-    input_code = ""
+    #input_code = ""
 
     #inputCode():
     pass
 
-class GamePiece(p_colour, p_index):
+class GamePiece():
 
     def __init__(self):
         self.position = p_index
@@ -87,3 +106,5 @@ class GamePiece(p_colour, p_index):
 
 wom = WorldOfMastermind()
 wom.run()
+wom.options()
+
