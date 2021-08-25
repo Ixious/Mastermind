@@ -15,19 +15,25 @@ class WorldOfMastermind():
         self.score_board = ''
 
     def run(self):
+        # Intro text, only to be displayed on initial opening of game.
         print("Welcome to the World of Mastermind!")
         print("Developed by Mason Manuel")
         print("COMP 1048 UO Object-Oriented Programming")
+
         wom.options()
-        print("out of wom.options")
+
+
         pass
 
     def options(self):
 
         user_selection = ''
 
+        # this while loop brings players back to the options screen as long as their choice
+        # was not 'p' for play game.
         while user_selection != 'p':
 
+            # This loop validates user input
             while user_selection not in ['r', 's', 'p', 'q']:
                 print()
                 print("What would you like to do?")
@@ -37,6 +43,8 @@ class WorldOfMastermind():
                 print(" (q) quit")
                 user_selection = input('> ')
 
+            # These if statements take user input and call the respected methods
+            # to undertake each task.
             if user_selection == 'r':
                 wom.registerPlayer()
                 print("out of function")
@@ -44,15 +52,20 @@ class WorldOfMastermind():
 
             elif user_selection == 's':
                 wom.showScoreBoard()
-            elif user_selection == 'p':
-                wom.playGame()
-            else:
+
+            elif user_selection == 'q':
                 print(self.quit_game)
                 self.quit_game = wom.quitGame()
                 print("out of function")
                 print(self.quit_game)
 
-            user_selection = ''
+            # There is no else statement here to cut down on duplicated code.
+            # instead, next if statement will revert user_selection back to blank to
+            # go to the top of the while loop to show the options text again.
+            # if the selection was 'p', the game will progress to wom.playGame()
+
+            if user_selection != 'p':
+                user_selection = ''
 
 
     def playGame(self):
