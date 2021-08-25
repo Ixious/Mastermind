@@ -11,6 +11,7 @@ class WorldOfMastermind():
 
     def __init__(self):
         self.reg_players = []
+        self.quit_game = False
 
 
     def run(self):
@@ -39,14 +40,18 @@ class WorldOfMastermind():
         elif user_selection == 'p':
             wom.playGame()
         else:
-            wom.quitGame()
+            print(self.quit_game)
+            self.quit_game = wom.quitGame()
+            print("out of function")
+            print(self.quit_game)
 
 
     def playGame(self):
         pass
 
     def quitGame(self):
-        pass
+        quit_game = True
+        return quit_game
 
     def registerPlayer(self):
         print("in registerPlayer")
