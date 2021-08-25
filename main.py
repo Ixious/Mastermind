@@ -12,38 +12,47 @@ class WorldOfMastermind():
     def __init__(self):
         self.reg_players = []
         self.quit_game = False
-
+        self.score_board = ''
 
     def run(self):
+        print("Welcome to the World of Mastermind!")
+        print("Developed by Mason Manuel")
+        print("COMP 1048 UO Object-Oriented Programming")
+        wom.options()
+        print("out of wom.options")
         pass
 
     def options(self):
 
         user_selection = ''
 
-        while user_selection not in ['r', 's', 'p', 'q']:
-            print("What would you like to do?")
-            print(" (r) register a new user")
-            print(" (s) show the score board")
-            print(" (p) play a game")
-            print(" (q) quit")
-            user_selection = input('> ')
+        while user_selection != 'p':
 
-        if user_selection == 'r':
-            wom.registerPlayer()
-            print("out of function")
-            print(self.reg_players)
-            wom.options()
+            while user_selection not in ['r', 's', 'p', 'q']:
+                print()
+                print("What would you like to do?")
+                print(" (r) register a new user")
+                print(" (s) show the score board")
+                print(" (p) play a game")
+                print(" (q) quit")
+                user_selection = input('> ')
 
-        elif user_selection == 's':
-            wom.showScoreBoard()
-        elif user_selection == 'p':
-            wom.playGame()
-        else:
-            print(self.quit_game)
-            self.quit_game = wom.quitGame()
-            print("out of function")
-            print(self.quit_game)
+            if user_selection == 'r':
+                wom.registerPlayer()
+                print("out of function")
+                print(self.reg_players)
+
+            elif user_selection == 's':
+                wom.showScoreBoard()
+            elif user_selection == 'p':
+                wom.playGame()
+            else:
+                print(self.quit_game)
+                self.quit_game = wom.quitGame()
+                print("out of function")
+                print(self.quit_game)
+
+            user_selection = ''
 
 
     def playGame(self):
@@ -59,15 +68,19 @@ class WorldOfMastermind():
 
         if new_player not in self.reg_players:
             self.reg_players.append(new_player)
+            print("Welcome, " + new_player + '!')
         else:
-            print("User is already registered")
+            print("Sorry, the name is already taken.")
 
     def showScoreBoard(self):
         print("this is where the scoreboard goes")
 
 
 class Game():
-    n_players = 0
+
+    def __init__(self):
+        self.n_players = 0
+        self.n_guesses = 0
 
     # setNGuesses():
     # setNPlayers():
@@ -130,5 +143,4 @@ class GamePiece():
 
 wom = WorldOfMastermind()
 wom.run()
-wom.options()
 
