@@ -26,21 +26,40 @@ class WorldOfMastermind():
             print(" (s) show the score board")
             print(" (p) play a game")
             print(" (q) quit")
-            user_selection = input()
+            user_selection = input('> ')
 
         if user_selection == 'r':
             wom.registerPlayer()
+            print("out of function")
+            print(self.reg_players)
+            wom.options()
+
+        elif user_selection == 's':
+            wom.showScoreBoard()
+        elif user_selection == 'p':
+            wom.playGame()
+        else:
+            wom.quitGame()
 
 
-    # def playGame():
-    #   pass
-    # def quitGame():
-    #   pass
+    def playGame(self):
+        pass
+
+    def quitGame(self):
+        pass
+
     def registerPlayer(self):
         print("in registerPlayer")
-    #   pass
-    # def showScoreBoard():
-    #   pass
+        new_player = input("What is the name of the new user?\n> ").capitalize()
+
+        if new_player not in self.reg_players:
+            self.reg_players.append(new_player)
+        else:
+            print("User is already registered")
+
+    def showScoreBoard(self):
+        print("this is where the scoreboard goes")
+
 
 class Game():
     n_players = 0
