@@ -10,7 +10,7 @@
 class WorldOfMastermind():
 
     def __init__(self):
-        self.reg_players = []
+        self.reg_players = ['HAL9000','VIKI']
         self.quit_game = False
         self.score_board = ''
 
@@ -20,56 +20,53 @@ class WorldOfMastermind():
         print("Developed by Mason Manuel")
         print("COMP 1048 UO Object-Oriented Programming")
 
-        wom.options()
+        play_game = wom.options()
+        if play_game:
+            wom.playGame()
 
-
-        pass
 
     def options(self):
 
         user_selection = ''
 
-        # this while loop brings players back to the options screen as long as their choice
-        # was not 'p' for play game.
-        while user_selection != 'p':
+        # This loop validates user input
+        while user_selection not in ['r', 's', 'p', 'q']:
+            print()
+            print("What would you like to do?")
+            print(" (r) register a new user")
+            print(" (s) show the score board")
+            print(" (p) play a game")
+            print(" (q) quit")
+            user_selection = input('> ')
 
-            # This loop validates user input
-            while user_selection not in ['r', 's', 'p', 'q']:
-                print()
-                print("What would you like to do?")
-                print(" (r) register a new user")
-                print(" (s) show the score board")
-                print(" (p) play a game")
-                print(" (q) quit")
-                user_selection = input('> ')
+        # These if statements take user input and call the respected methods
+        # to undertake each task.
+        if user_selection == 'r':
+            wom.registerPlayer()
+            print("out of function")
+            print(self.reg_players)
 
-            # These if statements take user input and call the respected methods
-            # to undertake each task.
-            if user_selection == 'r':
-                wom.registerPlayer()
-                print("out of function")
-                print(self.reg_players)
+        elif user_selection == 's':
+            wom.showScoreBoard()
 
-            elif user_selection == 's':
-                wom.showScoreBoard()
+        elif user_selection == 'q':
+            print(self.quit_game)
+            self.quit_game = wom.quitGame()
+            print("out of function")
+            print(self.quit_game)
 
-            elif user_selection == 'q':
-                print(self.quit_game)
-                self.quit_game = wom.quitGame()
-                print("out of function")
-                print(self.quit_game)
+        # There is no else statement here to cut down on duplicated code.
+        # instead, next if statement will revert user_selection back to blank to
+        # go to the top of the while loop to show the options text again.
+        # if the selection was 'p', the game will progress to wom.playGame()
 
-            # There is no else statement here to cut down on duplicated code.
-            # instead, next if statement will revert user_selection back to blank to
-            # go to the top of the while loop to show the options text again.
-            # if the selection was 'p', the game will progress to wom.playGame()
-
-            if user_selection != 'p':
-                user_selection = ''
+        if user_selection == 'p':
+            return True
 
 
     def playGame(self):
-        pass
+        print("welcome to playGame I'm currently underconstruction")
+        input("any key to end")
 
     def quitGame(self):
         quit_game = True
@@ -77,7 +74,7 @@ class WorldOfMastermind():
 
     def registerPlayer(self):
         print("in registerPlayer")
-        new_player = input("What is the name of the new user?\n> ").capitalize()
+        new_player = input("What is the name of the new user?\n> ")
 
         if new_player not in self.reg_players:
             self.reg_players.append(new_player)
@@ -88,6 +85,12 @@ class WorldOfMastermind():
     def showScoreBoard(self):
         print("this is where the scoreboard goes")
 
+class Players():
+
+    def __init__(self):
+        self.score = 0
+        self.games = 0
+        self.average = self.score / self.games
 
 class Game():
 
