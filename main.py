@@ -22,7 +22,9 @@ class WorldOfMastermind():
 
         play_game = wom.options()
         if play_game:
-            wom.playGame()
+            game = Game()
+            game.setGParameters()
+
 
 
     def options(self):
@@ -65,8 +67,8 @@ class WorldOfMastermind():
 
 
     def playGame(self):
-        print("welcome to playGame I'm currently underconstruction")
-        input("any key to end")
+        print("Let’s play the game of Mastermind!")
+
 
     def quitGame(self):
         quit_game = True
@@ -92,13 +94,28 @@ class Players():
         self.games = 0
         self.average = self.score / self.games
 
+    class gamePlayers():
+
+        def __init__(self, player_id):
+            self.id = player_id
+            self.score = 0
+
 class Game():
 
     def __init__(self):
         self.n_players = 0
         self.n_guesses = 0
 
-    # setNGuesses():
+    def setGParameters(self):
+        while self.n_players != [2-5]:
+            self.n_players = int(input("How many players (2-4)?\n> "))
+            if self.n_players != [2-5]:
+                print("Number of players must be between 2-4")
+            else:
+
+
+        self.n_guesses = input("")
+
     # setNPlayers():
     # checkPlayerName():
     pass
