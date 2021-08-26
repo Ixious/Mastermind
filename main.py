@@ -41,29 +41,32 @@ class WorldOfMastermind():
             print(" (q) quit")
             user_selection = input('> ')
 
-        # These if statements take user input and call the respected methods
-        # to undertake each task.
-        if user_selection == 'r':
-            wom.registerPlayer()
-            print("out of function")
-            print(self.reg_players)
+            # These if statements take user input and call the respected methods
+            # to undertake each task.
+            if user_selection == 'r':
+                wom.registerPlayer()
+                print("out of function")
+                print(self.reg_players)
 
-        elif user_selection == 's':
-            wom.showScoreBoard()
+            elif user_selection == 's':
+                wom.showScoreBoard()
 
-        elif user_selection == 'q':
-            print(self.quit_game)
-            self.quit_game = wom.quitGame()
-            print("out of function")
-            print(self.quit_game)
+            elif user_selection == 'q':
+                print(self.quit_game)
+                self.quit_game = wom.quitGame()
+                print("out of function")
+                print(self.quit_game)
 
-        # There is no else statement here to cut down on duplicated code.
-        # instead, next if statement will revert user_selection back to blank to
-        # go to the top of the while loop to show the options text again.
-        # if the selection was 'p', the game will progress to wom.playGame()
+            # There is no else statement here to cut down on duplicated code.
+            # instead, next if statement will revert user_selection back to blank to
+            # go to the top of the while loop to show the options text again.
+            # if the selection was 'p', the game will progress to wom.playGame()
 
-        if user_selection == 'p':
-            return True
+            if user_selection == 'p':
+                return True
+            else:
+                user_selection = ''
+
 
 
     def playGame(self):
@@ -75,8 +78,7 @@ class WorldOfMastermind():
         return quit_game
 
     def registerPlayer(self):
-        print("in registerPlayer")
-        new_player = input("What is the name of the new user?\n> ")
+        new_player = input("What is the name of the new user?\n> ").capitalize()
 
         if new_player not in self.reg_players:
             self.reg_players.append(new_player)
@@ -112,6 +114,7 @@ class Game():
             if self.n_players != [2-5]:
                 print("Number of players must be between 2-4")
             else:
+                pass
 
 
         self.n_guesses = input("")
@@ -159,19 +162,19 @@ class Code():
     #inputCode():
     pass
 
-class GamePiece():
+#class GamePiece(p_index, p_colour):
 
-    def __init__(self):
-        self.position = p_index
-        self.colour = p_colour
+   # def __init__(self, p_index, p_colour):
+       # self.position = p_index
+        #self.colour = p_colour
 
 
-    class Peg():
-        # def placePegs(code):
-        pass
+    #class Peg():
+     #   # def placePegs(code):
+     #   pass
 
-    class Marbel():
-        pass
+   # class Marbel():
+      #  pass
 
 
 wom = WorldOfMastermind()
