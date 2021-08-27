@@ -62,7 +62,6 @@ class WorldOfMastermind:
             correct_guess = False
 
             for each_board in player_board:
-                print("TESTING this is the guessing phase FINALLY")
                 while player_board[pdex].attempts_left > 0 and not correct_guess:
                     print('*', game.player_list[pdex], "'s turn to guess the code.")
                     print("Previous attempts:", player_board[pdex].attempts_taken)
@@ -231,20 +230,41 @@ class Board:
 
     def testGuess(self):
 
-        feedback_list = ''
-        code_index = 0
+        new_list = []
+        feedback = 'Feedback: '
 
-        if self.current_guess != self.set_code:
-            for marble in self.current_guess:
-                if marble == self.set_code[code_index]:
-                    feedback_list += 'K '
-                if marble != self.set_code[code_index] and marble in self.set_code:
-                    feedback_list += 'W '
-                code_index += 1
-        print("Feedback:", feedback_list)
+        for char in self.set_code:
+            new_list.append(char)
 
-        self.guess_log.append(self.current_guess)
-        self.feedbacklog.append(feedback_list)
+        marble_index = 0
+        for marble in self.current_guess:
+
+            if marble == self.set_code[marble_index]:
+                feedback += 'K '
+                del new_list[new_list.index(marble)]
+            elif marble in new_list:
+                feedback += 'W '
+                new_list.remove(marble)
+            marble_index += 1
+
+        print(feedback)
+
+        # code_comparison = set_code
+        # feedback_list = ''
+        # code_index = 0
+        #
+        #
+        # if self.current_guess != self.set_code:
+        #     for marble in self.current_guess:
+        #         if marble == self.set_code[code_index]:
+        #             feedback_list += 'K '
+        #         if marble != self.set_code[code_index] and marble in self.set_code:
+        #             feedback_list += 'W '
+        #         code_index += 1
+        # print("Feedback:", feedback_list)
+        #
+        # self.guess_log.append(self.current_guess)
+        # self.feedbacklog.append(feedback_list)
 
     def giveResult(self):
         pass
