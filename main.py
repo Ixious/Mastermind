@@ -29,12 +29,17 @@ class WorldOfMastermind:
             game.nGuesses()
 
             for each_player in game.player_list:
+                index = 0
+                if index < len(game.player_list):
+                    print('* ', each_player, "'s turn to set the code for, ", game.player_list[index + 1],
+                          " to break.")
+                elif index == len(game.player_list):
+                    print('* ', each_player, "'s turn to set the code for, ", game.player_list[0],
+                          " to break.")
+
                 each_player_board = Board(game.n_guesses)
                 each_player_board.setCode()
 
-    for each player in player list:
-        print("* ", each_player, "'s turn to set the code for", next_player, "to break.")
-        code.set
 
     def options(self):
 
@@ -82,13 +87,14 @@ class WorldOfMastermind:
         print("TESTING STILL IN DEVELOPMENT")
 
     def registerPlayer(self):
-        new_player = input("What is the name of the new user?\n> ")
+        new_player_name = input("What is the name of the new user?\n> ")
 
-        if new_player not in self.reg_players:
-            self.reg_players.append(new_player)
-            print("Welcome, " + new_player + '!')
+        if new_player_name not in self.reg_players:
+            self.reg_players.append(new_player_name)
+            print("Welcome, " + new_player_name + '!')
             new_player = Players()
-            print("TESTING", new_player, "'s score: " ,new_player.score)
+            new_player.setName(new_player_name)
+            print("TESTING", new_player.getName(), "'s score: " ,new_player.score)
         else:
             print("Sorry, the name is already taken.")
 
@@ -101,6 +107,13 @@ class Players:
     def __init__(self):
         self.score = 0
         self.games = 0
+        self.name = ''
+
+    def setName(self, name):
+        self.name = name
+
+    def getName(self):
+        return self.name
 
     class gamePlayers():
 
@@ -230,7 +243,7 @@ class Code:
         return self.input_code
 
 
-class GamePiece(p_index, p_colour):
+class GamePiece:
 
     def __init__(self, p_index, p_colour):
         self.position = p_index
