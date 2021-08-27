@@ -15,6 +15,7 @@ class WorldOfMastermind:
         # self.score_board = ''
 
     def run(self):
+
         # Intro text, only to be displayed on initial opening of game.
         print("Welcome to the World of Mastermind!")
         print("Developed by Mason Manuel")
@@ -23,35 +24,46 @@ class WorldOfMastermind:
         # Initiates options screen, this is a while loop that only progresses
         # when wom.options returns bool True for play_game. (user selects play)
         play_game = wom.options()
+
         if play_game:
+
             game = Game()                       # Initializes Game object
             game.playerList(game.nPlayers())    # Populates the playerList and nPlayers in game object
             game.setGuesses()                   # Sets nGuesses
 
-            index = 0
+            # Creates a board for each player to host set code, code attempts etc.
             player_board = []
-
             for each_player in game.player_list:
 
                 board = Board(each_player, game.n_guesses)
                 player_board.append(board)
-                print("TESTING this is the index of this instance", player_board[0].attempts_left)
+
+            # Codes can be set now that all the boards have been constructed with the above for loop.
+            index = 0
+            for each_player in game.player_list:
 
                 if index < len(game.player_list) - 1:
                     print('*', each_player, "'s turn to set the code for,", game.player_list[index + 1],
                           " to break.")
+
+                    # index + 1 is next player. i.e. Player at index 0 sets for index 1, and so on.
+                    player_board[index + 1].set_code = player_board[index + 1].setCode()
+
                 elif index == len(game.player_list) - 1:
                     print('*', each_player, "'s turn to set the code for,", game.player_list[0],
                           " to break.")
+
+                    # when index is same as len(), it's the last player, who needs to set code for index 0.
+                    player_board[0].set_code = player_board[0].setCode()
+
                 index += 1
 
-                player_board[index - 1].set_code = player_board[index - 1].setCode()
-                print(" TESTING", player_board[index -1].set_code, "this is the set code by", player_board[index -1].setter_name)
-
             pdex = 0        # player index
+            correct_guess = False
+
             for each_board in player_board:
                 print("TESTING this is the guessing phase FINALLY")
-                while player_board[pdex].attempts_left > 0:
+                while player_board[pdex].attempts_left > 0 and not correct_guess:
                     print('*', game.player_list[pdex], "'s turn to guess the code.")
                     print("Previous attempts:", player_board[pdex].attempts_taken)
                     print("Attempts left:", player_board[pdex].attempts_left)
@@ -207,9 +219,10 @@ class Board:
         self.attempts_left = n_guess
         self.set_code = ''
         self.current_guess = ''
-        self.setter_name = player_name
+        self.breaker_name = player_name
         self.guess_log = []
         self.feedbacklog = []
+        self.correct_guess = False
 
     def setCode(self):
         user_set_code = Code()
@@ -233,12 +246,14 @@ class Board:
         self.guess_log.append(self.current_guess)
         self.feedbacklog.append(feedback_list)
 
+    def giveResult(self):
+        pass
+
     def giveFeedback(self):
         pass
 
 
-    def giveResult(self):
-        pass
+
 
     def tallyScore(self):
         pass
