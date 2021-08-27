@@ -20,12 +20,21 @@ class WorldOfMastermind():
         print("Developed by Mason Manuel")
         print("COMP 1048 UO Object-Oriented Programming")
 
+        # Initiates options screen, this is a while loop that only progresses
+        # when wom.options returns bool True for play_game. (user selects play)
         play_game = wom.options()
         if play_game:
             game = Game()
             game.playerList(game.nPlayers())
             game.nGuesses()
 
+            for each_player in game.player_list:
+                each_player = Board()
+                each_player.
+
+    for each player in player list:
+        print("* ", each_player, "'s turn to set the code for", next_player, "to break.")
+        code.set
 
 
 
@@ -69,51 +78,10 @@ class WorldOfMastermind():
             else:
                 user_selection = ''
 
-    # def nPlayers(self):
-    #     print("Let’s play the game of Mastermind!")
-    #     n_players = 0
-    #
-    #     while n_players not in range(2,5):
-    #         n_players = int(input("How many players (2-4)?\n> "))
-    #         if n_players not in range(2,5):
-    #             print("Number of players must be between 2-4")
-    #         else:
-    #             return n_players
-
-
-
-    # def playerList(self, n_players):
-    #
-    #     player_list = []
-    #     index = 1
-    #     for player_id in range(n_players):
-    #         player_name = ''
-    #         while player_name not in self.reg_players:
-    #             player_name = input("What is the name of player #" + str(index) + "?\n> ")
-    #             if player_name not in self.reg_players:
-    #                 print("Invalid user name.")
-    #             elif player_name in player_list:
-    #                 print(player_name," is already in the game.")
-    #                 player_name =''
-    #         index += 1
-    #         player_list.append(player_name)
-    #     print(self.reg_players, ">>> registered players")
-    #     print(player_list, ">>> player list for this game")
-
-
-
-    # def nGuesses(self):
-    #
-    #     n_guesses = 0
-    #     while n_guesses not in range(5,11):
-    #         n_guesses = int(input("How many attempts will be allowed for each player (5-10)?\n> "))
-    #         if n_guesses not in range(5,11):
-    #             print("Number must be between 5-10")
-    #     return n_guesses
-
     def quitGame(self):
         quit_game = True
         return quit_game
+        print("TESTING STILL IN DEVELOPMENT")
 
     def registerPlayer(self):
         new_player = input("What is the name of the new user?\n> ")
@@ -127,6 +95,7 @@ class WorldOfMastermind():
 
     def showScoreBoard(self):
         print("this is where the scoreboard goes")
+        print("TESTING STILL IN DEVELOPMENT")
 
 class Players():
 
@@ -196,9 +165,6 @@ class Game():
                     print("Number must be between 5-10")
 
 
-
-
-
 class Board():
 
     def __init__(self, n_guess, n_attempts):
@@ -235,24 +201,38 @@ class Board():
     pass
 
 class Code():
-    #input_code = ""
 
-    #inputCode():
+    allowable_colours = ['R', 'G', 'B', 'Y', 'W', 'K']
+    set_code = ''
+
+    while len(set_code) != 4:
+        if len(set_code) != 4:
+            print("Invalid code.")
+            print("It must be exactly four characters, each can be R, G, B, Y, W, or K. ")
+            set_code = ''
+        else:
+            for marble in set_code:
+                if marble not in allowable_colours:
+                    print("Invalid code.")
+                    print("It must be exactly four characters, each can be R, G, B, Y, W, or K. ")
+                    set_code = ''
+            print("The code is now set for ", next_player, "to break")
+
+
     pass
 
-#class GamePiece(p_index, p_colour):
+class GamePiece(p_index, p_colour):
 
-   # def __init__(self, p_index, p_colour):
-       # self.position = p_index
-        #self.colour = p_colour
+    def __init__(self, p_index, p_colour):
+        self.position = p_index
+        self.colour = p_colour
 
+    class Peg():
+        def placePegs(code):
+            pass
 
-    #class Peg():
-     #   # def placePegs(code):
-     #   pass
-
-   # class Marbel():
-      #  pass
+    class Marbel():
+        pass
 
 
 wom = WorldOfMastermind()
