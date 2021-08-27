@@ -62,6 +62,7 @@ class WorldOfMastermind:
             correct_guess = False
 
             for each_board in player_board:
+
                 while player_board[pdex].attempts_left > 0 and not correct_guess:
                     print('*', game.player_list[pdex], "'s turn to guess the code.")
                     print("Previous attempts:", player_board[pdex].attempts_taken)
@@ -69,10 +70,16 @@ class WorldOfMastermind:
 
                     player_board[pdex].current_guess = player_board[pdex].setCode()
                     player_board[pdex].guess_log.append(player_board[pdex].current_guess)
-                    print(player_board[pdex].testGuess())
+
+                    if player_board[pdex].testGuess():
+                        print("correct guess")
+                    elif not player_board[pdex].testGuess():
+                        print(player_board[pdex].feedback)
 
                     player_board[pdex].attempts_left -= 1
                     player_board[pdex].attempts_taken += 1
+
+            pdex += 1
 
 
 
@@ -221,6 +228,7 @@ class Board:
         self.breaker_name = player_name
         self.guess_log = []
         self.feedbacklog = []
+        self.feedback = 'Feedback: '
         self.correct_guess = False
 
     def setCode(self):
@@ -230,24 +238,28 @@ class Board:
 
     def testGuess(self):
 
-        new_list = []
-        feedback = 'Feedback: '
+        if self.current_guess == self.set_code:
+            return True
+        else:
 
-        for char in self.set_code:
-            new_list.append(char)
+            self.feedback = 'Feedback: '
+            new_list = []
 
-        marble_index = 0
-        for marble in self.current_guess:
+            for char in self.set_code:
+                new_list.append(char)
 
-            if marble == self.set_code[marble_index]:
-                feedback += 'K '
-                del new_list[new_list.index(marble)]
-            elif marble in new_list:
-                feedback += 'W '
-                new_list.remove(marble)
-            marble_index += 1
+            marble_index = 0
+            for marble in self.current_guess:
 
-        print(feedback)
+                if marble == self.set_code[marble_index]:
+                    self.feedback += 'K '
+                    del new_list[new_list.index(marble)]
+                elif marble in new_list:
+                    self.feedback += 'W '
+                    new_list.remove(marble)
+                marble_index += 1
+
+            return False
 
         # code_comparison = set_code
         # feedback_list = ''
