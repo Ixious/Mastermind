@@ -22,13 +22,10 @@ class WorldOfMastermind():
 
         play_game = wom.options()
         if play_game:
-
-            n_players = int(wom.nPlayers())
-            player_list = wom.playerList(n_players)
-            n_guesses = int(wom.nGuesses())
-
             game = Game()
-            game.__init__(n_players, player_list, n_guesses)
+            game.playerList(game.nPlayers())
+            game.nGuesses()
+
 
 
 
@@ -72,47 +69,47 @@ class WorldOfMastermind():
             else:
                 user_selection = ''
 
-    def nPlayers(self):
-        print("Let’s play the game of Mastermind!")
-        n_players = 0
-
-        while n_players not in range(2,5):
-            n_players = int(input("How many players (2-4)?\n> "))
-            if n_players not in range(2,5):
-                print("Number of players must be between 2-4")
-            else:
-                return n_players
-
-
-
-    def playerList(self, n_players):
-
-        player_list = []
-        index = 1
-        for player_id in range(n_players):
-            player_name = ''
-            while player_name not in self.reg_players:
-                player_name = input("What is the name of player #" + str(index) + "?\n> ")
-                if player_name not in self.reg_players:
-                    print("Invalid user name.")
-                elif player_name in player_list:
-                    print(player_name," is already in the game.")
-                    player_name =''
-            index += 1
-            player_list.append(player_name)
-        print(self.reg_players, ">>> registered players")
-        print(player_list, ">>> player list for this game")
+    # def nPlayers(self):
+    #     print("Let’s play the game of Mastermind!")
+    #     n_players = 0
+    #
+    #     while n_players not in range(2,5):
+    #         n_players = int(input("How many players (2-4)?\n> "))
+    #         if n_players not in range(2,5):
+    #             print("Number of players must be between 2-4")
+    #         else:
+    #             return n_players
 
 
 
-    def nGuesses(self):
+    # def playerList(self, n_players):
+    #
+    #     player_list = []
+    #     index = 1
+    #     for player_id in range(n_players):
+    #         player_name = ''
+    #         while player_name not in self.reg_players:
+    #             player_name = input("What is the name of player #" + str(index) + "?\n> ")
+    #             if player_name not in self.reg_players:
+    #                 print("Invalid user name.")
+    #             elif player_name in player_list:
+    #                 print(player_name," is already in the game.")
+    #                 player_name =''
+    #         index += 1
+    #         player_list.append(player_name)
+    #     print(self.reg_players, ">>> registered players")
+    #     print(player_list, ">>> player list for this game")
 
-        n_guesses = 0
-        while n_guesses not in range(5,11):
-            n_guesses = int(input("How many attempts will be allowed for each player (5-10)?\n> "))
-            if n_guesses not in range(5,11):
-                print("Number must be between 5-10")
-        return n_guesses
+
+
+    # def nGuesses(self):
+    #
+    #     n_guesses = 0
+    #     while n_guesses not in range(5,11):
+    #         n_guesses = int(input("How many attempts will be allowed for each player (5-10)?\n> "))
+    #         if n_guesses not in range(5,11):
+    #             print("Number must be between 5-10")
+    #     return n_guesses
 
     def quitGame(self):
         quit_game = True
@@ -145,25 +142,62 @@ class Players():
 
 class Game():
 
-    def __init__(self, n_players, player_list, n_guesses):
-        self.n_players = n_players
-        self.n_guesses = n_guesses
-        self.player_list = player_list
+    def __init__(self):
+        self.n_players = 0
+        self.n_guesses = 0
+        self.player_list = []
 
-
-
-    def gSetUp(self):
-
+    def nPlayers(self):
         print("Let’s play the game of Mastermind!")
 
+        while self.n_players not in range(2,5):
+            self.n_players = input("How many players (2-4)?\n> ")
+
+            if not self.n_players.isnumeric():
+                print("Number of players must be between 2-4")
+                print("TESTING is numeric?", self.n_players.isnumeric())
+            else:
+                self.n_players = int(self.n_players)
+
+                if self.n_players not in range(2,5):
+                    print("Number of players must be between 2-4")
+
+        return self.n_players
+
+    def playerList(self, n_players):
+
+        index = 1
+
+        for player_id in range(n_players):
+            player_name = ''
+            while player_name not in self.player_list:
+                player_name = input("What is the name of player #" + str(index) + "?\n> ")
+                if player_name not in wom.reg_players:
+                    print("Invalid user name.")
+                elif player_name in self.player_list:
+                    print(player_name," is already in the game.")
+                    player_name =''
+
+                self.player_list.append(player_name)
+
+            index += 1
+
+    def nGuesses(self):
+
+        while self.n_guesses not in range(5,11):
+
+            self.n_guesses = input("How many attempts will be allowed for each player (5-10)?\n> ")
+            if not self.n_guesses.isnumeric():
+                print("Number must be between 5-10")
+            else:
+                self.n_guesses = int(self.n_guesses)
+
+                if self.n_guesses not in range(5, 11):
+                    print("Number must be between 5-10")
 
 
 
-        self.n_guesses = input("")
 
-    # setNPlayers():
-    # checkPlayerName():
-    pass
 
 class Board():
 
