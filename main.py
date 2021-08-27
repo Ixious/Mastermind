@@ -7,12 +7,12 @@
 # This is my own work as defined by
 #  the University's Academic Misconduct Policy.
 #
-class WorldOfMastermind():
+class WorldOfMastermind:
 
     def __init__(self):
         self.reg_players = ['HAL9000','VIKI']
         self.quit_game = False
-        self.score_board = ''
+        # self.score_board = ''
 
     def run(self):
         # Intro text, only to be displayed on initial opening of game.
@@ -29,14 +29,12 @@ class WorldOfMastermind():
             game.nGuesses()
 
             for each_player in game.player_list:
-                each_player = Board()
-                each_player.
+                each_player_board = Board(game.n_guesses)
+                each_player_board.setCode()
 
     for each player in player list:
         print("* ", each_player, "'s turn to set the code for", next_player, "to break.")
         code.set
-
-
 
     def options(self):
 
@@ -90,6 +88,7 @@ class WorldOfMastermind():
             self.reg_players.append(new_player)
             print("Welcome, " + new_player + '!')
             new_player = Players()
+            print("TESTING", new_player, "'s score: " ,new_player.score)
         else:
             print("Sorry, the name is already taken.")
 
@@ -97,7 +96,7 @@ class WorldOfMastermind():
         print("this is where the scoreboard goes")
         print("TESTING STILL IN DEVELOPMENT")
 
-class Players():
+class Players:
 
     def __init__(self):
         self.score = 0
@@ -109,7 +108,7 @@ class Players():
             self.id = player_id
             self.score = 0
 
-class Game():
+class Game:
 
     def __init__(self):
         self.n_players = 0
@@ -164,20 +163,18 @@ class Game():
                 if self.n_guesses not in range(5, 11):
                     print("Number must be between 5-10")
 
+class Board:
 
-class Board():
-
-    def __init__(self, n_guess, n_attempts):
+    def __init__(self, n_guess):
         self.n_allowed_guesses = n_guess
-        self.n_attempts = n_attempts
+        self.n_attempts = 0
+        self.set_code = ''
+        self.current_guess = ''
 
-    code_guess = ""
-    guess_log = "" #+ end line, + seps etc.
-    feedback_list =[]
-
-    def giveFeedback(self):
-        pass
-        #return #feedback
+    def setCode(self):
+        user_set_code = Code()
+        user_set_code.setInputCode()
+        self.set_code = user_set_code.getInputCode()
 
     def testGuess(self):
 
@@ -192,6 +189,10 @@ class Board():
 
         return feedback_list
 
+    def giveFeedback(self):
+        pass
+        #return #feedback
+
     def giveResult(self):
         pass
 
@@ -200,31 +201,33 @@ class Board():
 
     pass
 
-class Code():
+class Code:
 
-    allowable_colours = ['R', 'G', 'B', 'Y', 'W', 'K']
-    set_code = ''
+    def __init__(self):
+        self.input_code = ''
 
-    while len(set_code) != 4:
-        set_code = input('Please enter the code:\n> ').upper()
-        if len(set_code) != 4:
-            print("Invalid code.")
-            print("It must be exactly four characters, each can be R, G, B, Y, W, or K. ")
-            set_code = ''
-        else:
-            error_present = False
-            for marble in set_code:
-                if marble not in allowable_colours:
-                    error_present = True
-            if error_present:
+    def setInputCode(self):
+
+        allowable_colours = ['R', 'G', 'B', 'Y', 'W', 'K']
+
+        while len(self.input_code) != 4:
+            self.input_code = input('Please enter the code:\n> ').upper()
+            if len(self.input_code) != 4:
                 print("Invalid code.")
                 print("It must be exactly four characters, each can be R, G, B, Y, W, or K. ")
-                set_code = 'ERRORFOUND'
+                self.input_code = 'ERRORFOUND'
+            else:
+                error_present = False
+                for marble in self.input_code:
+                    if marble not in allowable_colours:
+                        error_present = True
+                if error_present:
+                    print("Invalid code.")
+                    print("It must be exactly four characters, each can be R, G, B, Y, W, or K. ")
+                    self.input_code = 'ERRORFOUND'
 
-        print(set_code)
-
-    print("The code is now set for ", 'next_player, to break')
-
+    def getInputCode(self):
+        return self.input_code
 
 
 class GamePiece(p_index, p_colour):
