@@ -22,11 +22,13 @@ class WorldOfMastermind():
 
         play_game = wom.options()
         if play_game:
-            n_players = wom.nPlayers()
-            player_list = wom.playerList(n_players)
-            n_guesses = wom.nGuesses()
 
-            game = Game(n_players,n_guesses,player_list)
+            n_players = int(wom.nPlayers())
+            player_list = wom.playerList(n_players)
+            n_guesses = int(wom.nGuesses())
+
+            game = Game()
+            game.__init__(n_players, player_list, n_guesses)
 
 
 
@@ -143,9 +145,12 @@ class Players():
 
 class Game():
 
-    def __init__(self):
+    def __init__(self, n_players, player_list, n_guesses):
         self.n_players = n_players
         self.n_guesses = n_guesses
+        self.player_list = player_list
+
+
 
     def gSetUp(self):
 
@@ -176,14 +181,16 @@ class Board():
 
     def testGuess(self):
 
-        # if code guess != set code:
-        #   for marbel in code guess:
-        #       if marbel == set code [index] and marbel == set code[colour]
-        #           place colour
-        #       if marbel == set code [colour] and != set code [index]:
-        #           place colour for this result
-        #return feedback_list
-        pass
+        feedback_list = []
+
+        if code_guess != set_code:
+            for marble in code_guess:
+                if marble == set_code[0]:
+                    feedback_list.append('K')
+                if marble != set_code[0] and marble in set_code:
+                    feedback_list.append('W')
+
+        return feedback_list
 
     def giveResult(self):
         pass
