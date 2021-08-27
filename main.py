@@ -206,20 +206,26 @@ class Code():
     set_code = ''
 
     while len(set_code) != 4:
+        set_code = input('Please enter the code:\n> ').upper()
         if len(set_code) != 4:
             print("Invalid code.")
             print("It must be exactly four characters, each can be R, G, B, Y, W, or K. ")
             set_code = ''
         else:
+            error_present = False
             for marble in set_code:
                 if marble not in allowable_colours:
-                    print("Invalid code.")
-                    print("It must be exactly four characters, each can be R, G, B, Y, W, or K. ")
-                    set_code = ''
-            print("The code is now set for ", next_player, "to break")
+                    error_present = True
+            if error_present:
+                print("Invalid code.")
+                print("It must be exactly four characters, each can be R, G, B, Y, W, or K. ")
+                set_code = 'ERRORFOUND'
+
+        print(set_code)
+
+    print("The code is now set for ", 'next_player, to break')
 
 
-    pass
 
 class GamePiece(p_index, p_colour):
 
