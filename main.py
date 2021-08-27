@@ -43,15 +43,15 @@ class WorldOfMastermind:
             for each_player in game.player_list:
 
                 if index < len(game.player_list) - 1:
-                    print('*', each_player, "'s turn to set the code for,", game.player_list[index + 1],
-                          " to break.")
+                    print('* ', each_player, "'s turn to set the code for ", game.player_list[index + 1],
+                          " to break.", sep='')
 
                     # index + 1 is next player. i.e. Player at index 0 sets for index 1, and so on.
                     player_board[index + 1].set_code = player_board[index + 1].setCode()
 
                 elif index == len(game.player_list) - 1:
-                    print('*', each_player, "'s turn to set the code for,", game.player_list[0],
-                          " to break.")
+                    print('*', each_player, "'s turn to set the code for ", game.player_list[0],
+                          " to break.", sep='')
 
                     # when index is same as len(), it's the last player, who needs to set code for index 0.
                     player_board[0].set_code = player_board[0].setCode()
@@ -64,7 +64,7 @@ class WorldOfMastermind:
             for each_board in player_board:
 
                 while player_board[pdex].attempts_left > 0 and not correct_guess:
-                    print('*', game.player_list[pdex], "'s turn to guess the code.")
+                    print('* ', each_board.breaker_name, "'s turn to guess the code.", sep='')
                     print("Previous attempts:", player_board[pdex].attempts_taken)
                     print("Attempts left:", player_board[pdex].attempts_left)
 
@@ -72,7 +72,8 @@ class WorldOfMastermind:
                     player_board[pdex].guess_log.append(player_board[pdex].current_guess)
 
                     if player_board[pdex].testGuess():
-                        print("correct guess")
+                        print("GOT THE RIGHT CODE MOTHERFUCKER")
+                        correct_guess = True
                     elif not player_board[pdex].testGuess():
                         print(player_board[pdex].feedback)
 
@@ -80,9 +81,6 @@ class WorldOfMastermind:
                     player_board[pdex].attempts_taken += 1
 
             pdex += 1
-
-
-
 
     def options(self):
 
@@ -254,38 +252,21 @@ class Board:
                 if marble == self.set_code[marble_index]:
                     self.feedback += 'K '
                     del new_list[new_list.index(marble)]
-                elif marble in new_list:
+                marble_index += 1
+
+            for marble in self.current_guess:
+                if marble in new_list:
                     self.feedback += 'W '
                     new_list.remove(marble)
                 marble_index += 1
 
             return False
 
-        # code_comparison = set_code
-        # feedback_list = ''
-        # code_index = 0
-        #
-        #
-        # if self.current_guess != self.set_code:
-        #     for marble in self.current_guess:
-        #         if marble == self.set_code[code_index]:
-        #             feedback_list += 'K '
-        #         if marble != self.set_code[code_index] and marble in self.set_code:
-        #             feedback_list += 'W '
-        #         code_index += 1
-        # print("Feedback:", feedback_list)
-        #
-        # self.guess_log.append(self.current_guess)
-        # self.feedbacklog.append(feedback_list)
-
     def giveResult(self):
         pass
 
     def giveFeedback(self):
         pass
-
-
-
 
     def tallyScore(self):
         pass
