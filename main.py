@@ -24,21 +24,46 @@ class WorldOfMastermind:
         # when wom.options returns bool True for play_game. (user selects play)
         play_game = wom.options()
         if play_game:
-            game = Game()
-            game.playerList(game.nPlayers())
-            game.nGuesses()
+            game = Game()                       # Initializes Game object
+            game.playerList(game.nPlayers())    # Populates the playerList and nPlayers in game object
+            game.setGuesses()                   # Sets nGuesses
+
+            index = 0
+            player_board = []
 
             for each_player in game.player_list:
-                index = 0
-                if index < len(game.player_list):
-                    print('* ', each_player, "'s turn to set the code for, ", game.player_list[index + 1],
-                          " to break.")
-                elif index == len(game.player_list):
-                    print('* ', each_player, "'s turn to set the code for, ", game.player_list[0],
-                          " to break.")
 
-                each_player_board = Board(game.n_guesses)
-                each_player_board.setCode()
+                board = Board(each_player, game.n_guesses)
+                player_board.append(board)
+                print("TESTING this is the index of this instance", player_board[0].attempts_left)
+
+                if index < len(game.player_list) - 1:
+                    print('*', each_player, "'s turn to set the code for,", game.player_list[index + 1],
+                          " to break.")
+                elif index == len(game.player_list) - 1:
+                    print('*', each_player, "'s turn to set the code for,", game.player_list[0],
+                          " to break.")
+                index += 1
+
+                player_board[index - 1].set_code = player_board[index - 1].setCode()
+                print(" TESTING", player_board[index -1].set_code, "this is the set code by", player_board[index -1].setter_name)
+
+            pdex = 0        # player index
+            for each_board in player_board:
+                print("TESTING this is the guessing phase FINALLY")
+                while player_board[pdex].attempts_left > 0:
+                    print('*', game.player_list[pdex], "'s turn to guess the code.")
+                    print("Previous attempts:", player_board[pdex].attempts_taken)
+                    print("Attempts left:", player_board[pdex].attempts_left)
+
+                    player_board[pdex].current_guess = player_board[pdex].setCode()
+                    player_board[pdex].guess_log.append(player_board[pdex].current_guess)
+                    print(player_board[pdex].testGuess())
+
+                    player_board[pdex].attempts_left -= 1
+                    player_board[pdex].attempts_taken += 1
+
+
 
 
     def options(self):
@@ -147,23 +172,22 @@ class Game:
 
     def playerList(self, n_players):
 
-        index = 1
+        index = 0
 
         for player_id in range(n_players):
             player_name = ''
             while player_name not in self.player_list:
-                player_name = input("What is the name of player #" + str(index) + "?\n> ")
+                player_name = input("What is the name of player #" + str(index + 1) + "?\n> ")
                 if player_name not in wom.reg_players:
                     print("Invalid user name.")
                 elif player_name in self.player_list:
                     print(player_name," is already in the game.")
                     player_name =''
-
-                self.player_list.append(player_name)
-
+                else:
+                    self.player_list.append(player_name)
             index += 1
 
-    def nGuesses(self):
+    def setGuesses(self):
 
         while self.n_guesses not in range(5,11):
 
@@ -178,33 +202,40 @@ class Game:
 
 class Board:
 
-    def __init__(self, n_guess):
-        self.n_allowed_guesses = n_guess
-        self.n_attempts = 0
+    def __init__(self, player_name, n_guess):
+        self.attempts_taken = 0
+        self.attempts_left = n_guess
         self.set_code = ''
         self.current_guess = ''
+        self.setter_name = player_name
+        self.guess_log = []
+        self.feedbacklog = []
 
     def setCode(self):
         user_set_code = Code()
         user_set_code.setInputCode()
-        self.set_code = user_set_code.getInputCode()
+        return user_set_code.getInputCode()
 
     def testGuess(self):
 
-        feedback_list = []
+        feedback_list = ''
+        code_index = 0
 
-        if code_guess != set_code:
-            for marble in code_guess:
-                if marble == set_code[0]:
-                    feedback_list.append('K')
-                if marble != set_code[0] and marble in set_code:
-                    feedback_list.append('W')
+        if self.current_guess != self.set_code:
+            for marble in self.current_guess:
+                if marble == self.set_code[code_index]:
+                    feedback_list += 'K '
+                if marble != self.set_code[code_index] and marble in self.set_code:
+                    feedback_list += 'W '
+                code_index += 1
+        print("Feedback:", feedback_list)
 
-        return feedback_list
+        self.guess_log.append(self.current_guess)
+        self.feedbacklog.append(feedback_list)
 
     def giveFeedback(self):
         pass
-        #return #feedback
+
 
     def giveResult(self):
         pass
