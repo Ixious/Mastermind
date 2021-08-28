@@ -225,7 +225,7 @@ class Board:
         self.current_guess = ''
         self.breaker_name = player_name
         self.guess_log = []
-        self.feedbacklog = []
+        self.feedback_log = []
         self.feedback = 'Feedback: '
         self.correct_guess = False
 
@@ -244,6 +244,8 @@ class Board:
             new_list = []
 
             for char in self.set_code:
+
+
                 new_list.append(char)
 
             marble_index = 0
@@ -260,13 +262,22 @@ class Board:
                     new_list.remove(marble)
                 marble_index += 1
 
+            self.feedback_log.append(self.feedback)
             return False
 
     def giveResult(self):
         pass
 
     def giveFeedback(self):
-        pass
+        feedback_index = 0
+
+        print("==============")
+        print("Code Feedback")
+        print("==============")
+        for each_score in self.guess_log:
+            print(str(each_score), end='')
+            print(str(self.feedback_log[feedback_index]))
+            feedback_index += 1
 
     def tallyScore(self):
         pass
