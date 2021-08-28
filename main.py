@@ -7,10 +7,15 @@
 # This is my own work as defined by
 #  the University's Academic Misconduct Policy.
 #
+
+import random
+
 class WorldOfMastermind:
 
     def __init__(self):
         self.cpu_players = ['HAL9000','VIKI']
+        self.humans = []
+        self.player_board =[]
         self.reg_players = []
         self.quit_game = False
         # self.score_board = ''
@@ -59,17 +64,16 @@ class WorldOfMastermind:
                 user_selection = ''
 
     def playGame(self):
+
         game = Game()  # Initializes Game object
         game.playerList(game.nPlayers())  # Populates the playerList and nPlayers in game object
         game.setGuesses()  # Sets nGuesses
 
         # Creates a board for each player to host set code, code attempts etc.
-        player_board = []
         for each_player in game.player_list:
             board = Board(each_player, game.n_guesses)
-            player_board.append(board)
+            self.player_board.append(board)
 
-        # Codes can be set now that all the boards have been constructed with the above for loop.
         index = 0
         for each_player in game.player_list:
 
@@ -77,41 +81,57 @@ class WorldOfMastermind:
                 print('\n* ', each_player, "'s turn to set the code for ", game.player_list[index + 1],
                       " to break.", sep='')
                 # index + 1 is next player. i.e. Player at index 0 sets for index 1, and so on.
-                player_board[index + 1].set_code = player_board[index + 1].setCode()
+                wom.player_board[index + 1].set_code = wom.player_board[index + 1].setCode(each_player)
                 print("The code is now set for", game.player_list[index + 1], 'to break')
 
             else:
                 print('\n*', each_player, "'s turn to set the code for ", game.player_list[0],
                       " to break.", sep='')
                 # when index is same as len(), it's the last player, who needs to set code for index 0.
-                player_board[0].set_code = player_board[0].setCode()
+                self.player_board[0].set_code = self.player_board[0].setCode(each_player)
+                print(self.player_board[0].set_code, self.player_board[0].player_name)
                 print("The code is now set for", game.player_list[0], 'to break')
             index += 1
 
-        for each_board in player_board:
-            pdex = 0  # player index
-            correct_guess = False
 
-            while player_board[pdex].attempts_left > 0 and not correct_guess:
-                print('\n* ', each_board.breaker_name, "'s turn to guess the code.", sep='')
-                print("Previous attempts:", player_board[pdex].attempts_taken)
-                if player_board[pdex].attempts_taken > 0:
-                    player_board[pdex].giveFeedback()
-                print("Attempts left:", player_board[pdex].attempts_left)
+        for each_board in wom.player_board:
+            print("TESTING", each_board.player_name)
 
-                player_board[pdex].current_guess = player_board[pdex].setCode()
-                player_board[pdex].guess_log.append(player_board[pdex].current_guess)
+            index = 0  # player index
 
-                if player_board[pdex].testGuess():
+            while self.player_board[index].attempts_left > 0:
+
+                print('\n* ', each_board.player_name, "'s turn to guess the code.", sep='')
+                print("Previous attempts:", self.player_board[index].attempts_taken)
+
+                # Feedback has to go between attempts taken and attempts left
+                # But it doesn't display if there are 0 attempts thus far.
+                if self.player_board[index].attempts_taken > 0:
+                    self.player_board[index].giveFeedback()
+
+                print("Attempts left:", self.player_board[index].attempts_left)
+                self.player_board[index].attempts_left -= 1
+                self.player_board[index].attempts_taken += 1
+
+                # Okay so this looks gross, but, this line sets the users current guess
+                # by calling setCode(), which takes the player name as an argument to check
+                # for CPU status.
+                self.player_board[index].current_guess = self.player_board[index].setCode(self.player_board[index].player_name)
+
+                print(self.player_board[index].testGuess())
+                print("TESTING CURRENT PBOARD", self.player_board[index].player_name)
+                print("TESTING CURRENT GUESS", self.player_board[index].current_guess)
+                print("TESTING CURRENT SETCO", self.player_board[index].set_code)
+
+                if self.player_board[index].testGuess():
                     print("GOT THE RIGHT CODE MOTHERFUCKER")
-                    correct_guess = True
-                elif not player_board[pdex].testGuess():
-                    print("Feedback: ", end='')
-                    print(player_board[pdex].feedback)
+                    self.player_board[index].correct_guess
 
-                player_board[pdex].attempts_left -= 1
-                player_board[pdex].attempts_taken += 1
-        pdex += 1
+                elif not self.player_board[index].correct_guess():
+                    print("Feedback: ", end='')
+                    print(self.player_board[index].feedback)
+
+            index += 1
 
     def quitGame(self):
         print("\nThank you for playing the World of Mastermind!")
@@ -120,10 +140,15 @@ class WorldOfMastermind:
     def registerPlayer(self):
         new_player_name = input("What is the name of the new user?\n> ")
 
-        if new_player_name not in self.reg_players:
+        if new_player_name not in wom.reg_players:
+            # create instance of new player and their name.
             new_player = Players()
             new_player.setName(new_player_name)
-            self.reg_players.append(new_player)
+            # add them to both the registered players (the list that holds their player instance)
+            # and add them to a list of names that the registered players have. To identify against CPU
+            wom.reg_players.append(new_player)
+            wom.humans.append(new_player.name)
+
             print("Welcome, " + new_player.getName() + '!')
             print("TESTING", new_player.getName(), "'s score: " ,new_player.score)
         else:
@@ -142,8 +167,6 @@ class WorldOfMastermind:
             txt = "{:<21}{}{:>6}{:>8}"
             print(txt.format(each_player.name, each_player.score, each_player.games, game_ave))
         print("=====================================")
-
-
 
 
 class Players:
@@ -197,7 +220,7 @@ class Game:
             player_name = ''
             while player_name not in self.player_list:
                 player_name = input("What is the name of player #" + str(index + 1) + "?\n> ")
-                if player_name not in wom.reg_players or player_name not in wom.cpu_players:
+                if player_name not in wom.humans and player_name not in wom.cpu_players:
                     print("Invalid user name.")
                 elif player_name in self.player_list:
                     print(player_name," is already in the game.")
@@ -219,6 +242,8 @@ class Game:
                 if self.n_guesses not in range(5, 11):
                     print("Number must be between 5-10")
 
+
+
 class Board:
 
     def __init__(self, player_name, n_guess):
@@ -226,23 +251,28 @@ class Board:
         self.attempts_left = n_guess
         self.set_code = ''
         self.current_guess = ''
-        self.breaker_name = player_name
+        self.player_name = player_name
         self.guess_log = []
         self.feedback_log = []
         self.feedback = ''
         self.correct_guess = False
 
-    def setCode(self):
+    def setCode(self, player):
+
         user_set_code = Code()
-        user_set_code.setInputCode()
-        return user_set_code.getInputCode()
+        if player in wom.cpu_players:
+            return user_set_code.cpuCode()
+        else:
+            return user_set_code.setInputCode()
 
     def testGuess(self):
 
         # Initial check to bypasss computations in case guess = correct
         if self.current_guess == self.set_code:
+            self.correct_guess = True
             return True
         else:
+            self.correct_guess = False
             # Resets feedback to blank, previous feedback is now stored in feedback_log
             self.feedback = ''
             new_list = []
@@ -265,6 +295,7 @@ class Board:
                 marble_index += 1
 
             self.feedback_log.append(self.feedback)
+            self.guess_log.append(self.current_guess)
             return False
 
     def giveResult(self):
@@ -291,10 +322,9 @@ class Code:
 
     def __init__(self):
         self.input_code = ''
+        self.allowable_colours = ['R', 'G', 'B', 'Y', 'W', 'K']
 
     def setInputCode(self):
-
-        allowable_colours = ['R', 'G', 'B', 'Y', 'W', 'K']
 
         while len(self.input_code) != 4:
             self.input_code = input('Please enter the code:\n> ').upper()
@@ -305,16 +335,16 @@ class Code:
             else:
                 error_present = False
                 for marble in self.input_code:
-                    if marble not in allowable_colours:
+                    if marble not in self.allowable_colours:
                         error_present = True
                 if error_present:
                     print("Invalid code.")
                     print("It must be exactly four characters, each can be R, G, B, Y, W, or K. ")
                     self.input_code = 'ERRORFOUND'
 
-    def getInputCode(self):
-        return self.input_code
-
+    def cpuCode(self):
+        for length in range(0,4):
+            self.input_code = self.input_code + self.allowable_colours[random.randint(0,5)]
 
 class GamePiece:
 
