@@ -30,7 +30,6 @@ class WorldOfMastermind:
         # when wom.options returns bool True for play_game. (user selects play)
         wom.options()
 
-
     def options(self):
 
         user_selection = ''
@@ -132,7 +131,6 @@ class WorldOfMastermind:
                 each_board.attempts_taken += 1
                 each_board.attempts_left -= 1
 
-
     def quitGame(self):
         print("\nThank you for playing the World of Mastermind!")
         wom.quit_game = True
@@ -150,7 +148,6 @@ class WorldOfMastermind:
             wom.humans.append(new_player.name)
 
             print("Welcome, " + new_player.getName() + '!')
-            print("TESTING", new_player.getName(), "'s score: " ,new_player.score)
         else:
             print("Sorry, the name is already taken.")
 
@@ -241,7 +238,6 @@ class Game:
 
                 if self.n_guesses not in range(5, 11):
                     print("Number must be between 5-10")
-
 
 
 class Board:
