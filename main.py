@@ -10,7 +10,8 @@
 class WorldOfMastermind:
 
     def __init__(self):
-        self.reg_players = ['HAL9000','VIKI']
+        self.cpu_players = ['HAL9000','VIKI']
+        self.reg_players = []
         self.quit_game = False
         # self.score_board = ''
 
@@ -113,26 +114,37 @@ class WorldOfMastermind:
         pdex += 1
 
     def quitGame(self):
-        print("Thank you for playing the World of Mastermind!")
+        print("\nThank you for playing the World of Mastermind!")
         wom.quit_game = True
-
-
 
     def registerPlayer(self):
         new_player_name = input("What is the name of the new user?\n> ")
 
         if new_player_name not in self.reg_players:
-            self.reg_players.append(new_player_name)
-            print("Welcome, " + new_player_name + '!')
             new_player = Players()
             new_player.setName(new_player_name)
+            self.reg_players.append(new_player)
+            print("Welcome, " + new_player.getName() + '!')
             print("TESTING", new_player.getName(), "'s score: " ,new_player.score)
         else:
             print("Sorry, the name is already taken.")
 
     def showScoreBoard(self):
-        print("this is where the scoreboard goes")
-        print("TESTING STILL IN DEVELOPMENT")
+        print("=====================================")
+        print("Name             Score Games Average")
+        print("=====================================")
+
+        for each_player in wom.reg_players:
+            if each_player.score == 0 and each_player.games == 0:
+                game_ave = 0.0
+            else:
+                game_ave = each_player.score / each_player.games
+            txt = "{:<21}{}{:>6}{:>8}"
+            print(txt.format(each_player.name, each_player.score, each_player.games, game_ave))
+        print("=====================================")
+
+
+
 
 class Players:
 
@@ -185,7 +197,7 @@ class Game:
             player_name = ''
             while player_name not in self.player_list:
                 player_name = input("What is the name of player #" + str(index + 1) + "?\n> ")
-                if player_name not in wom.reg_players:
+                if player_name not in wom.reg_players or player_name not in wom.cpu_players:
                     print("Invalid user name.")
                 elif player_name in self.player_list:
                     print(player_name," is already in the game.")
