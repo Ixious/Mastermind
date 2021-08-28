@@ -80,7 +80,7 @@ class WorldOfMastermind:
 
                     # index + 1 is next player. i.e. Player at index 0 sets for index 1, and so on.
                     player_board[index + 1].set_code = player_board[index].setCode()
-                    print("TESTING", player_board[index + 1].set_code)
+                    print("The code is now set for", player_board[index + 1].player_name, "to break.")
 
             elif index == len(game.player_list) - 1:
                 print('\n* ', each_player, "'s turn to set the code for ", player_board[0].player_name,
@@ -88,7 +88,7 @@ class WorldOfMastermind:
 
                 # when index is same as len(), it's the last player, who needs to set code for index 0.
                 player_board[0].set_code = player_board[index].setCode()
-                print("TESTING", player_board[0].set_code)
+                print("The code is now set for", player_board[0].player_name, "to break.")
 
             index += 1
 
@@ -102,11 +102,10 @@ class WorldOfMastermind:
             for each_board in player_board:
                 if not each_board.correct_guess:
                     if each_board.attempts_left > 0:
-                        print("TESTING", each_board.player_name)
                         play_order.append(each_board)
 
-                if len(play_order) == 0:
-                    all_complete = True
+            if len(play_order) == 0:
+                all_complete = True
 
             for each_board in play_order:
 
@@ -120,12 +119,11 @@ class WorldOfMastermind:
 
                 print("Attempts left:", each_board.attempts_left)
 
+                # Prompts owner of each board to guess the code
                 each_board.current_guess = each_board.setCode()
-                print("TESTING SET CODE",each_board.set_code)
-                print("TESTING CURRENT G", each_board.current_guess)
 
                 if each_board.testGuess():
-                    print("GOT THE RIGHT CODE MOTHERFUCKER")
+                    print(each_board.player_name, "broke the code in", each_board.attempts_taken, "attempts!")
                     each_board.correct_guess = True
                 else:
                     print("Feedback: ", end='')
@@ -263,10 +261,8 @@ class Board:
 
         user_set_code = Code()
         if self.player_name in wom.cpu_players:
-            print("TESTING", self.player_name, "IS IN CPU_PLAYERS")
             return user_set_code.cpuCode()
         else:
-            print("TESTING", self.player_name, "IS HUMAN")
             return user_set_code.setInputCode()
 
     def testGuess(self):
