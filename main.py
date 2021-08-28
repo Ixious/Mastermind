@@ -23,10 +23,7 @@ class WorldOfMastermind:
 
         # Initiates options screen, this is a while loop that only progresses
         # when wom.options returns bool True for play_game. (user selects play)
-        play_game = wom.options()
-
-        if play_game:
-            wom.playGame()
+        wom.options()
 
 
     def options(self):
@@ -41,32 +38,23 @@ class WorldOfMastermind:
             print(" (s) show the score board")
             print(" (p) play a game")
             print(" (q) quit")
-            user_selection = input('> ')
+            user_selection = input('> ').lower()
 
             # These if statements take user input and call the respected methods
             # to undertake each task.
             if user_selection == 'r':
                 wom.registerPlayer()
-                print("out of function")
-                print(self.reg_players)
 
             elif user_selection == 's':
                 wom.showScoreBoard()
 
             elif user_selection == 'q':
-                print(self.quit_game)
-                self.quit_game = wom.quitGame()
-                print("out of function")
-                print(self.quit_game)
+                wom.quitGame()
 
-            # There is no else statement here to cut down on duplicated code.
-            # instead, next if statement will revert user_selection back to blank to
-            # go to the top of the while loop to show the options text again.
-            # if the selection was 'p', the game will progress to wom.playGame()
+            elif user_selection == 'p':
+                wom.playGame()
 
-            if user_selection == 'p':
-                return True
-            else:
+            if not wom.quit_game:
                 user_selection = ''
 
     def playGame(self):
@@ -125,9 +113,10 @@ class WorldOfMastermind:
         pdex += 1
 
     def quitGame(self):
-        quit_game = True
-        return quit_game
-        print("TESTING STILL IN DEVELOPMENT")
+        print("Thank you for playing the World of Mastermind!")
+        wom.quit_game = True
+
+
 
     def registerPlayer(self):
         new_player_name = input("What is the name of the new user?\n> ")
