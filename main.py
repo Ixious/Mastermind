@@ -26,65 +26,8 @@ class WorldOfMastermind:
         play_game = wom.options()
 
         if play_game:
+            wom.playGame()
 
-            game = Game()                       # Initializes Game object
-            game.playerList(game.nPlayers())    # Populates the playerList and nPlayers in game object
-            game.setGuesses()                   # Sets nGuesses
-
-            # Creates a board for each player to host set code, code attempts etc.
-            player_board = []
-            for each_player in game.player_list:
-
-                board = Board(each_player, game.n_guesses)
-                player_board.append(board)
-
-            # Codes can be set now that all the boards have been constructed with the above for loop.
-            index = 0
-            for each_player in game.player_list:
-
-                if index < len(game.player_list) - 1:
-                    print('\n* ', each_player, "'s turn to set the code for ", game.player_list[index + 1],
-                          " to break.", sep='')
-
-                    # index + 1 is next player. i.e. Player at index 0 sets for index 1, and so on.
-                    player_board[index + 1].set_code = player_board[index + 1].setCode()
-                    print("The code is now set for", game.player_list[index + 1], 'to break')
-
-                elif index == len(game.player_list) - 1:
-                    print('\n*', each_player, "'s turn to set the code for ", game.player_list[0],
-                          " to break.", sep='')
-
-                    # when index is same as len(), it's the last player, who needs to set code for index 0.
-                    player_board[0].set_code = player_board[0].setCode()
-                    print("The code is now set for", game.player_list[0], 'to break')
-
-                index += 1
-
-            for each_board in player_board:
-                pdex = 0  # player index
-                correct_guess = False
-
-                while player_board[pdex].attempts_left > 0 and not correct_guess:
-                    print('\n* ', each_board.breaker_name, "'s turn to guess the code.", sep='')
-                    print("Previous attempts:", player_board[pdex].attempts_taken)
-                    if player_board[pdex].attempts_taken > 0:
-                        player_board[pdex].giveFeedback()
-                    print("Attempts left:", player_board[pdex].attempts_left)
-
-                    player_board[pdex].current_guess = player_board[pdex].setCode()
-                    player_board[pdex].guess_log.append(player_board[pdex].current_guess)
-
-                    if player_board[pdex].testGuess():
-                        print("GOT THE RIGHT CODE MOTHERFUCKER")
-                        correct_guess = True
-                    elif not player_board[pdex].testGuess():
-                        print("Feedback: ", end='')
-                        print(player_board[pdex].feedback)
-
-                    player_board[pdex].attempts_left -= 1
-                    player_board[pdex].attempts_taken += 1
-
-            pdex += 1
 
     def options(self):
 
@@ -125,6 +68,61 @@ class WorldOfMastermind:
                 return True
             else:
                 user_selection = ''
+
+    def playGame(self):
+        game = Game()  # Initializes Game object
+        game.playerList(game.nPlayers())  # Populates the playerList and nPlayers in game object
+        game.setGuesses()  # Sets nGuesses
+
+        # Creates a board for each player to host set code, code attempts etc.
+        player_board = []
+        for each_player in game.player_list:
+            board = Board(each_player, game.n_guesses)
+            player_board.append(board)
+
+        # Codes can be set now that all the boards have been constructed with the above for loop.
+        index = 0
+        for each_player in game.player_list:
+
+            if index < len(game.player_list) - 1:
+                print('\n* ', each_player, "'s turn to set the code for ", game.player_list[index + 1],
+                      " to break.", sep='')
+                # index + 1 is next player. i.e. Player at index 0 sets for index 1, and so on.
+                player_board[index + 1].set_code = player_board[index + 1].setCode()
+                print("The code is now set for", game.player_list[index + 1], 'to break')
+
+            else:
+                print('\n*', each_player, "'s turn to set the code for ", game.player_list[0],
+                      " to break.", sep='')
+                # when index is same as len(), it's the last player, who needs to set code for index 0.
+                player_board[0].set_code = player_board[0].setCode()
+                print("The code is now set for", game.player_list[0], 'to break')
+            index += 1
+
+        for each_board in player_board:
+            pdex = 0  # player index
+            correct_guess = False
+
+            while player_board[pdex].attempts_left > 0 and not correct_guess:
+                print('\n* ', each_board.breaker_name, "'s turn to guess the code.", sep='')
+                print("Previous attempts:", player_board[pdex].attempts_taken)
+                if player_board[pdex].attempts_taken > 0:
+                    player_board[pdex].giveFeedback()
+                print("Attempts left:", player_board[pdex].attempts_left)
+
+                player_board[pdex].current_guess = player_board[pdex].setCode()
+                player_board[pdex].guess_log.append(player_board[pdex].current_guess)
+
+                if player_board[pdex].testGuess():
+                    print("GOT THE RIGHT CODE MOTHERFUCKER")
+                    correct_guess = True
+                elif not player_board[pdex].testGuess():
+                    print("Feedback: ", end='')
+                    print(player_board[pdex].feedback)
+
+                player_board[pdex].attempts_left -= 1
+                player_board[pdex].attempts_taken += 1
+        pdex += 1
 
     def quitGame(self):
         quit_game = True
