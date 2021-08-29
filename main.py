@@ -13,8 +13,8 @@ import random
 class WorldOfMastermind:
     """
     This is a class for key operations within the Mastermind gameplay
-        such as the main run() method which calls all further methods and instantiates other
-        objects, and other methods such as playGame() quitGame() etc.
+    such as the main run() method which calls all further methods and instantiates other
+    objects, and other methods such as playGame() quitGame() etc.
 
     Attributes:
         cpu_players (list): List containing the str names of CPU operated players.
@@ -39,7 +39,7 @@ class WorldOfMastermind:
     def run(self):
         """
         This method is the only method to be called from outside wom.run()
-            it prints intro text, and calls wom.options()
+        it prints intro text, and calls wom.options()
 
         :parameter self
         :returns nil
@@ -57,9 +57,9 @@ class WorldOfMastermind:
     def options(self):
         """
         The function that acts as a menu for the user. wom.options() takes user input and calls
-            the method associated with that input i.e wom.registerPlayer() == 'r', after the method call,
-            the user selection is reverted to blank to restart the loop, allowing players to make a further
-            selection
+        the method associated with that input i.e wom.registerPlayer() == 'r', after the method call,
+        the user selection is reverted to blank to restart the loop, allowing players to make a further
+        selection
 
         :parameter self
         :returns nil
@@ -97,11 +97,11 @@ class WorldOfMastermind:
     def playGame(self):
         """
         This is the class method which allows for gameplay. Calling this method creates ONE
-            instance of Game() and then calls Game() methods to populate it's own attributes
-            n_players, player_list, and n_guesses. These attributes are the 'rules' of the round.
+        instance of Game() and then calls Game() methods to populate it's own attributes
+        n_players, player_list, and n_guesses. These attributes are the 'rules' of the round.
         It creates a list containing a Board() object for each_player contained in the player_list
-            it then calls methods which set the codes for each board, and then allow users to attempt to break
-            their code.
+        it then calls methods which set the codes for each board, and then allow users to attempt to break
+        their code.
 
         :parameter self
         :return: nil
@@ -128,7 +128,7 @@ class WorldOfMastermind:
         """
         Called when user_selection in wom.options() == 'q'
         This method prints the end text and sets the wom.quit_game attribute to True, signalling the end
-            of the wom.options() loop, and ending program execution.
+        of the wom.options() loop, and ending program execution.
 
         :parameter self
         :return: nil
@@ -140,8 +140,8 @@ class WorldOfMastermind:
         """
         Called when wom.options user_selection == 'r'
         This method creates a new instance of Player() by taking input from the user for the
-            new_player_name. Checks this name against the wom.humans list to avoid double-ups
-            and then creates Player() object, and adds object to wom.reg_players list
+        new_player_name. Checks this name against the wom.humans list to avoid double-ups
+        and then creates Player() object, and adds object to wom.reg_players list
         Also displays some text to greet player or to show error.
 
         :return: nil
@@ -186,8 +186,8 @@ class WorldOfMastermind:
     def searchRegPlayers(self, name):
         """
         Clever method searches the wom.reg_players list of Player() objects by checking each objects
-            name attribute. if the player.name = name passed in as an argument, then the Player object
-            that is being searched for is at the index specified i.e. wom.reg_players[index]
+        name attribute. if the player.name = name passed in as an argument, then the Player object
+        that is being searched for is at the index specified i.e. wom.reg_players[index]
 
         This is used so that other attributes for Player objects can be updated, such as score/games.
         :param name:
@@ -309,9 +309,9 @@ class Game:
     def playerList(self, n_players):
         """
         This method sets allows the user to select which players are going to play the round of
-            mastermind. it uses n_players to determine the correct amount of times to ask for user input
-            and checks the user input against player names found in the wom.humans and wom.cpu_players list
-            if they are not in those lists, they are not yet registered and cannot play a round
+        mastermind. it uses n_players to determine the correct amount of times to ask for user input
+        and checks the user input against player names found in the wom.humans and wom.cpu_players list
+        if they are not in those lists, they are not yet registered and cannot play a round
         :param n_players:
         :return:
         """
@@ -334,8 +334,8 @@ class Game:
     def setGuesses(self):
         """
         setGuesses(self) takes user input to set game.n_guesses as an integer between 5 and 10.
-            it checks the input to ensure it is both numeric and that the integer falls between the
-            correct range of 5-10 inclusive.
+        it checks the input to ensure it is both numeric and that the integer falls between the
+        correct range of 5-10 inclusive.
         :return:
         """
 
@@ -353,10 +353,10 @@ class Game:
     def setCodes(self):
         """
         This method will ask for input from a player to set the code for their opponent. #1 sets for #2,
-            #2 sets for #3, #3 sets for #4, and #4 sets for #1. It achieves this by going through each_player
-            in self.player_list (set by game.PlayerList()) and requesting input each time.
+        #2 sets for #3, #3 sets for #4, and #4 sets for #1. It achieves this by going through each_player
+        in self.player_list (set by game.PlayerList()) and requesting input each time.
         This method tests if the current each_player is the last one by comparing it length of the player_list
-            if it is the last player in the list, it sets the code for player_list at index [0]
+        if it is the last player in the list, it sets the code for player_list at index [0]
 
         This method makes a call to Board.setCode().
         :return:
@@ -445,10 +445,10 @@ class Game:
     def tallyScore(self):
         """
         tallyScore(self) is called by wom.playGame() after game.roundRobin(). It allows for
-            Player object scores to be updated through utilising the board attributes: attempts_taken,
-            and attempts_left, and by calling the wom.searchRegPlayers() method to find the correct index
-            to update player scores, also updates player.game while it has the correct player_index
-            handy.
+        Player object scores to be updated through utilising the board attributes: attempts_taken,
+        and attempts_left, and by calling the wom.searchRegPlayers() method to find the correct index
+        to update player scores, also updates player.game while it has the correct player_index
+        handy.
 
         :return:
         """
@@ -598,12 +598,31 @@ class Board:
 
 
 class Code:
+    """
+    This class is for Code objects. Each time a code instance is created, it has the attributes of
+    allowed_colours and a currently blank input_code. Code objects can be used to set a code on a board
+    or to guess a code on a board.
+
+    Attributes:
+        input_code (str): will contain the result of either the cpuCode or userInputCode methods
+        allowable_colours (list): list containing all str characters that players can choose from
+    """
 
     def __init__(self):
+        """
+        Constructor for Code class
+        """
         self.input_code = ''
         self.allowable_colours = ['R', 'G', 'B', 'Y', 'W', 'K']
 
     def setInputCode(self):
+        """
+        This function initiates a while loop, that continues as long as the input_code variable has
+        a length of less than 4. User will input code, and then the method checks to validate data entry
+        by ensuring it is the correct length, and that it only contains str characters from the
+        allowable_colours list.
+        :return:
+        """
 
         while len(self.input_code) != 4:
             self.input_code = input('Please enter the code:\n> ').upper()
@@ -623,6 +642,11 @@ class Code:
         return self.input_code
 
     def cpuCode(self):
+        """
+        This method utilizes random.randint to assign a new colour to the code list for a length
+        of 4. it randomly selects the index of the allowable_colours list.
+        :return:
+        """
         for length in range(0,4):
             self.input_code = self.input_code + self.allowable_colours[random.randint(0,5)]
 
