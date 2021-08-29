@@ -16,6 +16,7 @@ class WorldOfMastermind:
         self.cpu_players = ['HAL9000','VIKI']
         self.humans = []
         self.reg_players = []
+        self.player_board = []
         self.quit_game = False
         # self.score_board = ''
 
@@ -63,73 +64,22 @@ class WorldOfMastermind:
 
     def playGame(self):
 
-        game = Game()  # Initializes Game object
+        game = Game()                     # Initializes Game object
         game.playerList(game.nPlayers())  # Populates the playerList and nPlayers in game object
-        game.setGuesses()  # Sets nGuesses
+        game.setGuesses()                 # Sets nGuesses
 
         # this creates a list of player board instances
-        player_board = [Board(each_player, game.n_guesses) for each_player in game.player_list]
+        wom.player_board = [Board(each_player, game.n_guesses) for each_player in game.player_list]
 
-        # Setting the code for each other
-        index = 0
-        for each_player in game.player_list:
-            if index < len(game.player_list) - 1:
-                    print('\n* ', each_player, "'s turn to set the code for ", player_board[index + 1].player_name,
-                          " to break.", sep='')
+        # gets each player to set a code for the next
+        game.setCodes()
 
-                    # index + 1 is next player. i.e. Player at index 0 sets for index 1, and so on.
-                    player_board[index + 1].set_code = player_board[index].setCode()
-                    print("The code is now set for", player_board[index + 1].player_name, "to break.")
+        # set play_order and begin guessing.
+        game.roundRobin()
 
-            elif index == len(game.player_list) - 1:
-                print('\n* ', each_player, "'s turn to set the code for ", player_board[0].player_name,
-                               " to break.", sep='')
 
-                # when index is same as len(), it's the last player, who needs to set code for index 0.
-                player_board[0].set_code = player_board[index].setCode()
-                print("The code is now set for", player_board[0].player_name, "to break.")
-
-            index += 1
-
-        # Guessing the code hopefully, this loop breaks if no players have attempts remaining
-        # or if they have completed their code.
-        all_complete = False
-        while not all_complete:
-
-            play_order = []
-
-            for each_board in player_board:
-                if not each_board.correct_guess:
-                    if each_board.attempts_left > 0:
-                        play_order.append(each_board)
-
-            if len(play_order) == 0:
-                all_complete = True
-
-            for each_board in play_order:
-
-                print('\n* ', each_board.player_name, "'s turn to guess the code.", sep='')
-                print("Previous attempts:", each_board.attempts_taken)
-
-                # Feedback has to go between attempts taken and attempts left
-                # But it doesn't display if there are 0 attempts thus far.
-                if each_board.attempts_taken > 0:
-                    each_board.giveFeedback()
-
-                print("Attempts left:", each_board.attempts_left)
-
-                # Prompts owner of each board to guess the code
-                each_board.current_guess = each_board.setCode()
-
-                if each_board.testGuess():
-                    print(each_board.player_name, "broke the code in", each_board.attempts_taken, "attempts!")
-                    each_board.correct_guess = True
-                else:
-                    print("Feedback: ", end='')
-                    print(each_board.feedback)
-
-                each_board.attempts_taken += 1
-                each_board.attempts_left -= 1
+        print("\nThe game is now finished.")
+        game.tallyScore()
 
     def quitGame(self):
         print("\nThank you for playing the World of Mastermind!")
@@ -239,6 +189,75 @@ class Game:
                 if self.n_guesses not in range(5, 11):
                     print("Number must be between 5-10")
 
+    def setCodes(self):
+
+        # Setting the code for each other
+        index = 0
+        for each_player in self.player_list:
+            if index < len(self.player_list) - 1:
+                print('\n* ', each_player, "'s turn to set the code for ", wom.player_board[index + 1].player_name,
+                      " to break.", sep='')
+
+                # index + 1 is next player. i.e. Player at index 0 sets for index 1, and so on.
+                wom.player_board[index + 1].set_code = wom.player_board[index].setCode()
+                print("The code is now set for", wom.player_board[index + 1].player_name, "to break.")
+
+            elif index == len(self.player_list) - 1:
+                print('\n* ', each_player, "'s turn to set the code for ", wom.player_board[0].player_name,
+                      " to break.", sep='')
+
+                # when index is same as len(), it's the last player, who needs to set code for index 0.
+                wom.player_board[0].set_code = wom.player_board[index].setCode()
+                print("The code is now set for", wom.player_board[0].player_name, "to break.")
+
+            index += 1
+
+    def roundRobin(self):
+
+        all_complete = False
+        while not all_complete:
+
+            play_order = []
+
+            for each_board in wom.player_board:
+                if not each_board.correct_guess:
+                    if each_board.attempts_left > 0:
+                        play_order.append(each_board)
+
+            if len(play_order) == 0:
+                all_complete = True
+
+            for each_board in play_order:
+
+                print('\n* ', each_board.player_name, "'s turn to guess the code.", sep='')
+                print("Previous attempts:", each_board.attempts_taken)
+                # Feedback has to go between attempts taken and attempts left
+                # But it doesn't display if there are 0 attempts thus far.
+                if each_board.attempts_taken > 0:
+                    each_board.giveFeedback()
+                print("Attempts left:", each_board.attempts_left)
+
+                # Prompts owner of each board to guess the code
+                each_board.current_guess = each_board.setCode()
+                # Increment attempts taken and left
+                each_board.attempts_taken += 1
+                each_board.attempts_left -= 1
+
+                if each_board.testGuess():
+                    print(each_board.player_name, "broke the code in", each_board.attempts_taken, "attempts!")
+                    each_board.correct_guess = True
+                else:
+                    print("Feedback: ", end='')
+                    print(each_board.feedback)
+
+    def tallyScore(self):
+
+        for each_player in wom.player_board:
+            pass
+
+
+
+
 
 class Board:
 
@@ -294,9 +313,6 @@ class Board:
             self.guess_log.append(self.current_guess)
             return False
 
-    def giveResult(self):
-        pass
-
     def giveFeedback(self):
         feedback_index = 0
 
@@ -309,10 +325,6 @@ class Board:
             feedback_index += 1
         print("==============")
 
-    def tallyScore(self):
-        pass
-
-    pass
 
 class Code:
 
