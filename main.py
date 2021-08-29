@@ -77,9 +77,13 @@ class WorldOfMastermind:
         # set play_order and begin guessing.
         game.roundRobin()
 
-
         print("\nThe game is now finished.")
-        game.tallyScore()
+
+        for each_player in wom.player_board:
+            if each_player.player_name in wom.humans:
+                name = each_player.player_name
+                index = wom.searchRegPlayers(name)
+                wom.reg_players[index].updateScore()
 
     def quitGame(self):
         print("\nThank you for playing the World of Mastermind!")
@@ -107,13 +111,23 @@ class WorldOfMastermind:
         print("=====================================")
 
         for each_player in wom.reg_players:
-            if each_player.score == 0 and each_player.games == 0:
-                game_ave = 0.0
-            else:
+            try:
                 game_ave = each_player.score / each_player.games
+            except:
+                game_ave = 0.0
+
             txt = "{:<21}{}{:>6}{:>8}"
             print(txt.format(each_player.name, each_player.score, each_player.games, game_ave))
         print("=====================================")
+
+    def searchRegPlayers(self, name):
+
+        index = 0
+        for players in wom.reg_players:
+            if players.name == name:
+                return index
+            else:
+                index += 1
 
 
 class Players:
@@ -129,11 +143,12 @@ class Players:
     def getName(self):
         return self.name
 
-    class gamePlayers():
+    def updateScore(self, total_score):
+        self.score = self.score + total_score
 
-        def __init__(self, player_id):
-            self.id = player_id
-            self.score = 0
+    def updateGames(self):
+        self.games += 1
+
 
 class Game:
 
@@ -252,11 +267,32 @@ class Game:
 
     def tallyScore(self):
 
+        index = 0
+
         for each_player in wom.player_board:
-            pass
 
+            if each_player.player_name in wom.humans:
 
+                name = each_player.player_name
+                score_break = each_player.attempts_left
 
+                try:
+                    score_set = wom.player_board[index + 1].attempts_taken
+                except:
+                    score_set = wom.player_board[0].attempts_taken
+
+                total_score = score_break + score_set
+                print(name , "receives", score_break, "+",
+                      score_set, "=", total_score)
+
+                player_index = wom.searchRegPlayers(name)
+                print(player_index)
+                print(wom.reg_players[0].score)
+                wom.reg_players[player_index].updateScore(total_score)
+                print(wom.reg_players[0].score)
+                index += 1
+
+        return total_score
 
 
 class Board:
@@ -356,19 +392,6 @@ class Code:
             self.input_code = self.input_code + self.allowable_colours[random.randint(0,5)]
 
         return self.input_code
-
-class GamePiece:
-
-    def __init__(self, p_index, p_colour):
-        self.position = p_index
-        self.colour = p_colour
-
-    class Peg():
-        def placePegs(code):
-            pass
-
-    class Marbel():
-        pass
 
 
 wom = WorldOfMastermind()
