@@ -11,8 +11,25 @@
 import random
 
 class WorldOfMastermind:
+    """
+    This is a class for key operations within the Mastermind gameplay
+        such as the main run() method which calls all further methods and instantiates other
+        objects, and other methods such as playGame() quitGame() etc.
+
+    Attributes:
+        cpu_players (list): List containing the str names of CPU operated players
+        humans      (list): List which will house the names of registered human players
+        reg_players (list): List containing Player() objects [which contains score, games, name]
+        player_board(list): List containing Board() objects [a new board for each player in the round]
+        quit_game   (bool): Used to quit program on user command
+    """
 
     def __init__(self):
+        """
+        Constructor for WorldOfMastermind
+        :parameter self
+        :returns nil
+        """
         self.cpu_players = ['HAL9000','VIKI']
         self.humans = []
         self.reg_players = []
@@ -20,6 +37,13 @@ class WorldOfMastermind:
         self.quit_game = False
 
     def run(self):
+        """
+        This method is the only method to be called from outside wom.run()
+            it prints intro text, and calls wom.options()
+
+        :parameter self
+        :returns nil
+        """
 
         # Intro text, only to be displayed on initial opening of game.
         print("Welcome to the World of Mastermind!")
@@ -31,6 +55,15 @@ class WorldOfMastermind:
         wom.options()
 
     def options(self):
+        """
+        The function that acts as a menu for the user. wom.options() takes user input and calls
+            the method associated with that input i.e wom.registerPlayer() == 'r', after the method call,
+            the user selection is reverted to blank to restart the loop, allowing players to make a further
+            selection
+
+        :parameter self
+        :returns nil
+        """
 
         user_selection = ''
 
@@ -62,6 +95,17 @@ class WorldOfMastermind:
                 user_selection = ''
 
     def playGame(self):
+        """
+        This is the class method which allows for gameplay. Calling this method creates ONE
+            instance of Game() and then calls Game() methods to populate it's own attributes
+            n_players, player_list, and n_guesses. These attributes are the 'rules' of the round.
+        It creates a list containing a Board() object for each_player contained in the player_list
+            it then calls methods which set the codes for each board, and then allow users to attempt to break
+            their code.
+
+        :parameter self
+        :return: nil
+        """
 
         game = Game()                     # Initializes Game object
         game.playerList(game.nPlayers())  # Populates the playerList and nPlayers in game object
@@ -81,13 +125,27 @@ class WorldOfMastermind:
         game.tallyScore()
 
     def quitGame(self):
+        """
+        Called when user_selection in wom.options() == 'q'
+        This method prints the end text and sets the wom.quit_game attribute to True, signalling the end
+            of the wom.options() loop, and ending program execution.
+
+        :parameter self
+        :return: nil
+        """
         print("\nThank you for playing the World of Mastermind!")
         wom.quit_game = True
 
     def registerPlayer(self):
+        """
+        Called when wom.options user_selection == 'r'
+        This method creates a new instance of Player() by taking input from the user for the
+            new_player_name
+        :return:
+        """
         new_player_name = input("What is the name of the new user?\n> ")
 
-        if new_player_name not in wom.reg_players:
+        if new_player_name not in wom.humans:
             # create instance of new player and their name.
             new_player = Players()
             new_player.setName(new_player_name)
