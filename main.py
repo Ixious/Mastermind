@@ -480,8 +480,30 @@ class Game:
 
 
 class Board:
+    """
+    Board class objects are created for each player, so there are between 2-4 boards created.
+    each board holds attributes that have been dictated by the game 'rules' such as the attempts_left.
+    as well as attributes pertaining to this board only, such as guess_log, feedback_log etc.
+
+    Attributes:
+        attempts_taken (int): initializes at 0
+        attempts_left (int): from n_guess argument
+        set_code (str): set by board.setCode
+        current_guess (str) set by board.setCode each turn of roundRobin
+        player_name (str) from player_name argument
+        guess_log (list): list of all guess attempts
+        feedback_log (list): list of all feedback
+        feedback (str): current feedback, resets each turn of roundRobin
+        correct_guess (bool): used to signify that this board is finished to roundRobin
+    """
 
     def __init__(self, player_name, n_guess):
+        """
+        Constructor for Board class. takes 2 parameters of player_name and n_guess
+
+        :param player_name:
+        :param n_guess:
+        """
         self.attempts_taken = 0
         self.attempts_left = n_guess
         self.set_code = ''
@@ -494,6 +516,15 @@ class Board:
 
     def setCode(self):
 
+        """
+        setCode is a method which creates an instance of Code(). It then runs a check to see if
+        the player is a CPU (HAL9000, VIKI) or a human. It returns the result of either
+        user_set_code.cpuCode() - which is a randomly generated code for CPU players OR
+        user_set_code.setInputCode() - which asks the human user for keyboard input.
+
+        :return: result of either Code.cpuCode() or Code.setInputCode()
+        """
+
         user_set_code = Code()
         if self.player_name in wom.cpu_players:
             return user_set_code.cpuCode()
@@ -501,6 +532,21 @@ class Board:
             return user_set_code.setInputCode()
 
     def testGuess(self):
+
+        """
+        This method compares the boards current_guess and set_code attributes. If these attributes
+            are equal then the attribute correct_guess will be modified to True.
+            if they are not equal it creates new_list: a list that holds each individual str character
+            from Board.set_code. It then compares each str char/"marble" against the items in new_list.
+
+        First it checks for correct colour and index, and will add a 'K' to the Board.feedback, it will then
+            delete that piece of data from new_list so that duplicate feedback is not given. Once this is
+            done, any marbles that gave feedback K have been removed, then the marbles are compared against
+            the remaining items in new_list to give the 'W' feedback to signify that the colour is in there,
+            just not in the correct index.
+
+        :return: bool
+        """
 
         # Initial check to bypasss computations in case guess = correct
         if self.current_guess == self.set_code:
@@ -534,6 +580,11 @@ class Board:
             return False
 
     def giveFeedback(self):
+        """
+        This method prints specified lines of text as well as the feedback_log list as a string.
+        and the guess_log list as a string, formatted as per specifications.
+        :return:
+        """
         feedback_index = 0
 
         print("==============")
