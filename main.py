@@ -17,11 +17,11 @@ class WorldOfMastermind:
         objects, and other methods such as playGame() quitGame() etc.
 
     Attributes:
-        cpu_players (list): List containing the str names of CPU operated players
-        humans      (list): List which will house the names of registered human players
-        reg_players (list): List containing Player() objects [which contains score, games, name]
-        player_board(list): List containing Board() objects [a new board for each player in the round]
-        quit_game   (bool): Used to quit program on user command
+        cpu_players (list): List containing the str names of CPU operated players.
+        humans      (list): List which will house the names of registered human players.
+        reg_players (list): List containing Player() objects [which contains score, games, name].
+        player_board(list): List containing Board() objects [a new board for each player in the round].
+        quit_game   (bool): Used to quit program on user command.
     """
 
     def __init__(self):
@@ -140,8 +140,11 @@ class WorldOfMastermind:
         """
         Called when wom.options user_selection == 'r'
         This method creates a new instance of Player() by taking input from the user for the
-            new_player_name
-        :return:
+            new_player_name. Checks this name against the wom.humans list to avoid double-ups
+            and then creates Player() object, and adds object to wom.reg_players list
+        Also displays some text to greet player or to show error.
+
+        :return: nil
         """
         new_player_name = input("What is the name of the new user?\n> ")
 
@@ -159,6 +162,13 @@ class WorldOfMastermind:
             print("Sorry, the name is already taken.")
 
     def showScoreBoard(self):
+        """
+        Method displays scoreboard and calculates the players average score.
+        Tries to divide each_player.score by each_player.games, and handles exceptions of
+        ZeroDivisionError by setting game_ave = 0.0
+
+        :returns nil
+        """
         print("=====================================")
         print("Name             Score Games Average")
         print("=====================================")
@@ -174,6 +184,15 @@ class WorldOfMastermind:
         print("=====================================")
 
     def searchRegPlayers(self, name):
+        """
+        Clever method searches the wom.reg_players list of Player() objects by checking each objects
+            name attribute. if the player.name = name passed in as an argument, then the Player object
+            that is being searched for is at the index specified i.e. wom.reg_players[index]
+
+        This is used so that other attributes for Player objects can be updated, such as score/games.
+        :param name:
+        :return: index
+        """
 
         index = 0
         for players in wom.reg_players:
