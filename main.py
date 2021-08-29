@@ -8,6 +8,10 @@
 #  the University's Academic Misconduct Policy.
 #
 
+# For this program:     all Classes are ShownLikeThis (capitalised)
+#                       all methods are shownLikeThis (camelCase)
+#                       all variables are shown_like_this (underscored)
+#
 import random
 
 class WorldOfMastermind:
@@ -122,7 +126,7 @@ class WorldOfMastermind:
 
         print("\nThe game is now finished.")
 
-        game.tallyScore()
+        wom.tallyScore()
 
     def quitGame(self):
         """
@@ -200,6 +204,42 @@ class WorldOfMastermind:
                 return index
             else:
                 index += 1
+
+    def tallyScore(self):
+        """
+        tallyScore(self) is called by wom.playGame() after game.roundRobin(). It allows for
+        Player object scores to be updated through utilising the board attributes: attempts_taken,
+        and attempts_left, and by calling the wom.searchRegPlayers() method to find the correct index
+        to update player scores, also updates player.game while it has the correct player_index
+        handy.
+
+        :return:
+        """
+
+        index = 0
+
+        for each_player in wom.player_board:
+
+            if each_player.player_name in wom.humans:
+
+                name = each_player.player_name
+                score_break = each_player.attempts_left
+
+                try:
+                    score_set = wom.player_board[index + 1].attempts_taken
+                except:
+                    score_set = wom.player_board[0].attempts_taken
+
+                total_score = score_break + score_set
+                print(name , "receives", score_break, "+",
+                      score_set, "=", total_score)
+
+                player_index = wom.searchRegPlayers(name)
+
+                wom.reg_players[player_index].updateScore(total_score)
+                wom.reg_players[player_index].updateGames()
+
+            index += 1
 
 
 class Players:
@@ -442,42 +482,6 @@ class Game:
                     print("Feedback: ", end='')
                     print(each_board.feedback)
 
-    def tallyScore(self):
-        """
-        tallyScore(self) is called by wom.playGame() after game.roundRobin(). It allows for
-        Player object scores to be updated through utilising the board attributes: attempts_taken,
-        and attempts_left, and by calling the wom.searchRegPlayers() method to find the correct index
-        to update player scores, also updates player.game while it has the correct player_index
-        handy.
-
-        :return:
-        """
-
-        index = 0
-
-        for each_player in wom.player_board:
-
-            if each_player.player_name in wom.humans:
-
-                name = each_player.player_name
-                score_break = each_player.attempts_left
-
-                try:
-                    score_set = wom.player_board[index + 1].attempts_taken
-                except:
-                    score_set = wom.player_board[0].attempts_taken
-
-                total_score = score_break + score_set
-                print(name , "receives", score_break, "+",
-                      score_set, "=", total_score)
-
-                player_index = wom.searchRegPlayers(name)
-
-                wom.reg_players[player_index].updateScore(total_score)
-                wom.reg_players[player_index].updateGames()
-
-            index += 1
-
 
 class Board:
     """
@@ -624,20 +628,25 @@ class Code:
         :return:
         """
 
+        # check for correct code length
         while len(self.input_code) != 4:
             self.input_code = input('Please enter the code:\n> ').upper()
+            # validate data entry, check length of input
             if len(self.input_code) != 4:
                 print("Invalid code.")
                 print("It must be exactly four characters, each can be R, G, B, Y, W, or K. ")
+                # ERRORFOUND is a len != 4 and so will begin the loop again.
                 self.input_code = 'ERRORFOUND'
             else:
                 error_present = False
+                # Check to make sure all letters in 4 letter code are from allowable_colours
                 for marble in self.input_code:
                     if marble not in self.allowable_colours:
                         error_present = True
                 if error_present:
                     print("Invalid code.")
                     print("It must be exactly four characters, each can be R, G, B, Y, W, or K. ")
+                    # ERRORFOUND is a len != 4 and so will begin the loop again.
                     self.input_code = 'ERRORFOUND'
         return self.input_code
 
