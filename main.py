@@ -203,22 +203,62 @@ class WorldOfMastermind:
 
 
 class Players:
+    """
+    This is the Players class. It has functions to update and get attributes related to a Player object
+
+    Attributes:
+         score (int): a container for a Player objects running score, this is updated after rounds
+         games (int): holds how many games object has participated in, incremented each round
+         name  (str): is the name of the player which the Player object was created for
+    """
 
     def __init__(self):
+        """
+        Constructor for Player class
+        :parameter self
+        :returns nil
+        """
         self.score = 0
         self.games = 0
         self.name = ''
 
     def setName(self, name):
+        """
+        Method for setting Player.name to specified string gets the name parameter
+        from wom.registerPlayer()
+
+        :param name:
+        :return: none
+        """
         self.name = name
 
     def getName(self):
+        """
+        This function can be called to request the name of a Player object, when called returns
+        player.name as str
+
+        :return: name
+        """
         return self.name
 
     def updateScore(self, total_score):
+        """
+        This method updates the Player attribute 'player.score' through addition of 'total_score'
+        to the existing value held within the player.score variable. this is called at the end of a
+        wom.playGame() round.
+
+        :param total_score:
+        :return:
+        """
         self.score = self.score + total_score
 
     def updateGames(self):
+        """
+        This method increments the attribute 'player.games' by an integer of 1, this is called at the
+        end of a wom.playGame() round
+
+        :return:
+        """
         self.games += 1
 
 
