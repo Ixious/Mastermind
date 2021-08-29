@@ -79,11 +79,14 @@ class WorldOfMastermind:
 
         print("\nThe game is now finished.")
 
-        for each_player in wom.player_board:
-            if each_player.player_name in wom.humans:
-                name = each_player.player_name
-                index = wom.searchRegPlayers(name)
-                wom.reg_players[index].updateScore()
+        game.tallyScore()
+
+        # for each_player in wom.player_board:
+        #     if each_player.player_name in wom.humans:
+        #         name = each_player.player_name
+        #         index = wom.searchRegPlayers(name)
+        #         wom.reg_players[index].updateScore()
+        #         wom.reg_players[index].updateGames()
 
     def quitGame(self):
         print("\nThank you for playing the World of Mastermind!")
@@ -286,11 +289,11 @@ class Game:
                       score_set, "=", total_score)
 
                 player_index = wom.searchRegPlayers(name)
-                print(player_index)
-                print(wom.reg_players[0].score)
+
                 wom.reg_players[player_index].updateScore(total_score)
-                print(wom.reg_players[0].score)
-                index += 1
+                wom.reg_players[player_index].updateGames()
+
+            index += 1
 
         return total_score
 
