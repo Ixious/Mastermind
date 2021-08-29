@@ -263,13 +263,34 @@ class Players:
 
 
 class Game:
+    """
+    When wom.playGame() is called, it creates an instance of a Game object. The Game class
+    has attributes which set the 'rules' of the game: number of players (n_players), number of allowed
+    guesses (n_guesses), and a list of the current players (player_list). The class has functions to set
+    the attributes of the object, as well as methods which are used for the game to operate, such as
+    setting the code to break, or creating a play order for players to play in a round robin style.
+
+    Attributes:
+        n_players   (int)
+        n_guesses   (int)
+        player_list (list)
+    """
 
     def __init__(self):
+        """
+        Constructor for Game class
+        """
         self.n_players = 0
         self.n_guesses = 0
         self.player_list = []
 
     def nPlayers(self):
+        """
+        nPlayers(self) first prints the beginning text, and then checks to see that the n_players has not
+        yet been set. It takes user input to set the n_players attribute, it then validates the user input
+        by checking if it is numeric, and then if it is within the acceptable range of 2-4.
+        :return:
+        """
         print("Let’s play the game of Mastermind!")
 
         while self.n_players not in range(2,5):
@@ -277,7 +298,6 @@ class Game:
 
             if not self.n_players.isnumeric():
                 print("Number of players must be between 2-4")
-                print("TESTING is numeric?", self.n_players.isnumeric())
             else:
                 self.n_players = int(self.n_players)
 
@@ -287,6 +307,14 @@ class Game:
         return self.n_players
 
     def playerList(self, n_players):
+        """
+        This method sets allows the user to select which players are going to play the round of
+            mastermind. it uses n_players to determine the correct amount of times to ask for user input
+            and checks the user input against player names found in the wom.humans and wom.cpu_players list
+            if they are not in those lists, they are not yet registered and cannot play a round
+        :param n_players:
+        :return:
+        """
 
         index = 0
 
@@ -304,6 +332,12 @@ class Game:
             index += 1
 
     def setGuesses(self):
+        """
+        setGuesses(self) takes user input to set game.n_guesses as an integer between 5 and 10.
+            it checks the input to ensure it is both numeric and that the integer falls between the
+            correct range of 5-10 inclusive.
+        :return:
+        """
 
         while self.n_guesses not in range(5,11):
 
@@ -317,6 +351,16 @@ class Game:
                     print("Number must be between 5-10")
 
     def setCodes(self):
+        """
+        This method will ask for input from a player to set the code for their opponent. #1 sets for #2,
+            #2 sets for #3, #3 sets for #4, and #4 sets for #1. It achieves this by going through each_player
+            in self.player_list (set by game.PlayerList()) and requesting input each time.
+        This method tests if the current each_player is the last one by comparing it length of the player_list
+            if it is the last player in the list, it sets the code for player_list at index [0]
+
+        This method makes a call to Board.setCode().
+        :return:
+        """
 
         # Setting the code for each other
         index = 0
@@ -340,8 +384,27 @@ class Game:
             index += 1
 
     def roundRobin(self):
+        """
+        roundRobin(self) is a method which loops until the boolean 'all_complete' is altered to True.
+        while the loop is active, it goes through the board objects contained in the wom.player_board list
+        checks each boards attribute 'correct_guess' and also 'attempts_left'. If the board object has
+        False correct_guess and has > 0 attempts remaining, then it is added to the play_order list.
 
-        all_complete = False
+        This allows for the game to be played in a round-robin style where guessing is taken in turns. If one
+        player finishes, they won't be added to the play_order and play will resume only for those contained
+        in the list.
+
+        If no boards in wom.player_board pass both checks, the list will be empty, thus the len(play_order)
+        would be 0, this sets all_complete to True and ends the while loop.
+
+        This function also calls to method: Board.giveFeedback()
+
+        Attributes:
+            all_complete (bool)
+            play_order (list)
+        :return:
+        """
+        all_complete = False        # Used to break out of the while loop when changed to True.
         while not all_complete:
 
             play_order = []
@@ -351,6 +414,8 @@ class Game:
                     if each_board.attempts_left > 0:
                         play_order.append(each_board)
 
+            # If no boards in wom.player_board pass both checks, the list is empty, and all games
+            # are complete
             if len(play_order) == 0:
                 all_complete = True
 
@@ -378,6 +443,15 @@ class Game:
                     print(each_board.feedback)
 
     def tallyScore(self):
+        """
+        tallyScore(self) is called by wom.playGame() after game.roundRobin(). It allows for
+            Player object scores to be updated through utilising the board attributes: attempts_taken,
+            and attempts_left, and by calling the wom.searchRegPlayers() method to find the correct index
+            to update player scores, also updates player.game while it has the correct player_index
+            handy.
+
+        :return:
+        """
 
         index = 0
 
@@ -403,8 +477,6 @@ class Game:
                 wom.reg_players[player_index].updateGames()
 
             index += 1
-
-        return total_score
 
 
 class Board:
