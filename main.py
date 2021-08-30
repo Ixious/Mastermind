@@ -126,7 +126,7 @@ class WorldOfMastermind:
 
         print("\nThe game is now finished.")
 
-        wom.tallyScore()
+        wom.tallyScore(game.n_guesses)
 
     def quitGame(self):
         """
@@ -205,7 +205,7 @@ class WorldOfMastermind:
             else:
                 index += 1
 
-    def tallyScore(self):
+    def tallyScore(self, n_guesses):
         """
         tallyScore(self) is called by wom.playGame() after game.roundRobin(). It allows for
         Player object scores to be updated through utilising the board attributes: attempts_taken,
@@ -223,12 +223,22 @@ class WorldOfMastermind:
             if each_player.player_name in wom.humans:
 
                 name = each_player.player_name
-                score_break = each_player.attempts_left
+
+                if each_player.correct_guess:
+                    score_break = each_player.attempts_left + 1
+                else:
+                    score_break = 0
 
                 try:
-                    score_set = wom.player_board[index + 1].attempts_taken
+                    if wom.player_board[index + 1].correct_guess:
+                        score_set = wom.player_board[index + 1].attempts_taken - 1
+                    else:
+                        score_set = n_guesses
                 except:
-                    score_set = wom.player_board[0].attempts_taken
+                    if wom.player_board[0].correct_guess:
+                        score_set = wom.player_board[0].attempts_taken - 1
+                    else:
+                        score_set = n_guesses
 
                 total_score = score_break + score_set
                 print(name , "receives", score_break, "+",
